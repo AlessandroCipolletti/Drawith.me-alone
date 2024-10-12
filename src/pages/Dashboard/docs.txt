@@ -1,0 +1,5 @@
+/*
+  in questa nuova versione, nella modalità con tutti i disegni, permetto 10 livelli di zoom, in cui l'area visualizzata cresce linearmente e non esponenzialmente come su google maps.
+  quindi width = width * N ; scale = 1 / N
+
+*/

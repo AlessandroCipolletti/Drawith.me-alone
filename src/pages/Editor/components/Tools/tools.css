@@ -1,0 +1,200 @@
+.drawith__EDITOR-FULLSCREEN .editor-tools__container,
+.drawith__EDITOR-FULLSCREEN .editor-tools__versions-container {
+  transform: translate3d(-100%, 0rem, 0rem);
+}
+.editor-tools__container,
+.editor-tools__versions-container {
+  --tools-container-margin-top: calc(var(--header-height) + var(--editor-page-margin));
+  --tools-container-margin-bottom: calc(var(--colorpicker-height) + var(--app-margin-bottom) + calc(2 * var(--editor-page-margin)));
+  --tools-height: calc(
+    var(--100vh)
+    - var(--tools-container-margin-top)
+    - var(--tools-container-margin-bottom)
+  );
+
+  position: absolute;
+  width: var(--editor-tools-width);
+  height: var(--tools-height);
+  top: var(--tools-container-margin-top);
+  left: 0rem;
+}
+.editor-tools__container {
+  transition: transform var(--options-show-transition);
+  z-index: 900;
+  overflow: auto;
+  -webkit-overflow-scrolling: touch;
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;  /* Firefox */
+}
+.editor-tools__container::-webkit-scrollbar {
+  display: none;
+}
+.editor-tools__versions-container {
+  z-index: 800;
+  transition: transform var(--options-show-transition);
+}
+
+.editor-tools__versions {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0rem;
+  left: 0rem;
+  transition: transform var(--options-show-transition), opacity var(--options-show-transition);
+  transform: translate3d(0rem, 0rem, 0rem);
+  display: flex;
+  flex-direction: column;
+  /* background-color: var(--palette-white); */
+  /* border-left: solid 1px var(--palette-gray-4); */
+  opacity: 0;
+  overflow: hidden;
+  -webkit-overflow-scrolling: touch;
+}
+.editor-tools__versions-open {
+  transform: translate3d(100%, 0rem, 0rem);
+  opacity: 1;
+}
+
+.drawith__PHONE .editor-tools__tool {
+  margin: 0rem;
+  height: 4.4rem;
+}
+.editor-tools__tool {
+  width: 4.6rem;
+  height: 4.5rem;
+  margin: 0.3rem 0;
+  background-position: center;
+  background-size: 80%;
+  background-repeat: no-repeat;
+  border-right: solid 0.2rem transparent;
+  border-left: solid 0.2rem transparent;
+  cursor: pointer;
+}
+
+.editor-tools__tool-selected,
+.editor-tools__tool-activated {
+  border-right: solid 0.2rem var(--palette-gray-0);
+  border-left: solid 0.2rem transparent;
+}
+
+/*
+.editor-tools__tool-pen {
+  background-image: url("../../../../static/icons/png/pen.png");
+}
+.editor-tools__tool-crayon {
+  background-image: url("../../../../static/icons/png/crayon.png");
+}
+.editor-tools__tool-softEraser {
+  background-image: url("../../../../static/icons/png/softEraser.png");
+}
+*/
+.editor-tools__tool-marker {
+  background-image: url("../../../../static/icons/png/marker.png");
+}
+.editor-tools__tool-spray {
+  background-image: url("../../../../static/icons/png/spray.png");
+}
+.editor-tools__tool-pencil {
+  background-image: url("../../../../static/icons/png/pencil.png");
+}
+.editor-tools__tool-highlighter {
+  background-image: url("../../../../static/icons/png/highlighter.png");
+}
+.editor-tools__tool-brush {
+  background-image: url("../../../../static/icons/png/brush.png");
+}
+.editor-tools__tool-hardBrush {
+  background-image: url("../../../../static/icons/png/hardBrush.png");
+}
+.editor-tools__tool-bucket {
+  background-image: url("../../../../static/icons/png/bucket.png");
+}
+.editor-tools__tool-ruler {
+  background-image: url("../../../../static/icons/png/ruler.png");
+}
+.editor-tools__tool-eraser {
+  background-image: url("../../../../static/icons/png/hardEraser.png");
+}
+.editor-tools__tool-undo {
+  background-image: url("../../../../static/icons/png/undo.png");
+}
+.editor-tools__tool-redo {
+  background-image: url("../../../../static/icons/png/redo.png");
+}
+/* .editor-tools__tool-coworkingStart {
+  background-image: url("../../../../static/icons/png/coworkingStart.png");
+}
+.editor-tools__tool-coworkingStop {
+  background-image: url("../../../../static/icons/png/coworkingStop.png");
+  display: none;
+} */
+/* .editor-tools__tool-save {
+  background-image: url("../../../../static/icons/png/save.png");
+} */
+.editor-tools__tool-clear {
+  background-image: url("../../../../static/icons/png/clear.png");
+}
+/* .editor-tools__tool-exit {
+  background-image: url("../../../../static/icons/png/exit.png");
+} */
+
+.editor-tools__tool-paper.paper-white {
+  background-image: url("../../../../static/icons/png/paper_white.png");
+}
+.editor-tools__tool-paper.paper-squares {
+  background-image: url("../../../../static/icons/png/paper_squares.png");
+}
+.editor-tools__tool-paper.paper-lines {
+  background-image: url("../../../../static/icons/png/paper_lines.png");
+}
+.editor-tools__tool-paper.paper-points {
+  background-image: url("../../../../static/icons/png/paper_points.png");
+}
+
+/* .drawith__EDITOR-COWORKING .editor-tools__tool-coworkingStop {
+  display: block;
+}
+.drawith__EDITOR-COWORKING .editor-tools__tool-coworkingStart {
+  display: none;
+} */
+
+
+.editor-tools__versions-button {
+  width: 4rem;
+  height: 4rem;
+  border-radius: 2rem;
+  margin: 0.75rem 0.5rem;
+  border: solid 1px black;
+  background-color: var(--palette-white);
+  background-size: 80%;
+  background-repeat: no-repeat;
+  background-position: center;
+  color: black;
+  cursor: pointer;
+}
+.editor-tools__versions-button.editor-tools__versions-button-image {
+  border: solid 1px rgba(0, 0, 0, 0.5);
+}
+.drawith__PHONE .editor-tools__versions-button {
+  margin: 0.6rem 0.75rem;
+}
+.editor-tools__versions-button-selected {
+  color: var(--palette-white);
+  background-color: var(--palette-gray-5);
+  border: solid 1px var(--palette-white);
+}
+.editor-tools__versions-button-selected.editor-tools__versions-button-image {
+  border: solid 1px var(--palette-white);
+}
+.editor-tools__versions-button-image.editor-tools__versions-button-selected {
+  background-color: rgba(0, 0, 0, 0.1);
+}
+
+.editor-tools__versions-button > p {
+  font-size: 1.75rem;
+  text-align: center;
+  line-height: 4rem;
+  width: 100%;
+  height: 100%;
+  font-family: arial;
+}

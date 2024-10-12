@@ -1,0 +1,1 @@
+export { handlePointerEvents } from './pointerEventsUtils'

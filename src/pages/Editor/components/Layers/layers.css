@@ -1,0 +1,302 @@
+.drawith__PHONE .drawith__main-container {
+  --layers-container-width: var(--editor-tools-width);
+  --layers-container-margin-top: var(--editor-page-margin);
+  --layers-container-margin-bottom: var(--editor-page-margin);
+}
+.drawith__main-container {
+  --layers-container-width: calc(2 * (var(--editor-tools-width) + var(--editor-page-margin)));
+  --layers-container-margin-top: calc(var(--layers-new-button-height) + var(--editor-page-margin) * 4 + var(--header-height));
+  --layers-container-margin-bottom: calc(var(--editor-page-margin) * 4);
+  --layers-new-button-height: calc(var(--layers-container-width) / 2);
+  --layers-container-height: calc(var(--100vh) - var(--colorpicker-height) - var(--app-margin-bottom) - var(--layers-container-margin-top) - var(--layers-container-margin-bottom));
+  --layers-list-height: calc(
+    var(--100vh)
+    - var(--header-height)
+    - var(--colorpicker-height) - var(--app-margin-bottom)
+    - var(--layers-container-margin-bottom)
+    - 4.5rem
+    - calc(var(--layers-container-width) / 2)
+  );
+}
+
+.drawith__EDITOR-FULLSCREEN .editor-layers__container {
+  transform: translate3d(100%, -50%, 0rem);
+}
+.drawith__PHONE.drawith__EDITOR-FULLSCREEN .editor-layers__container {
+  transform: translate3d(100%, 0%, 0rem);
+}
+.drawith__PHONE .editor-layers__container {
+  top: var(--header-height);
+  margin-top: var(--layers-container-margin-top);
+  transform: translate3d(0px, 0%, 0px);
+}
+.editor-layers__container {
+  transition: transform var(--options-show-transition);
+  position: absolute;
+  right: 0rem;
+  width: var(--layers-container-width);
+  max-height: var(--layers-container-height);
+  z-index: 900;
+  top: calc(50% + var(--editor-tools-width));
+  transform: translate3d(0px, -50%, 0px);
+}
+.editor-tools__container::-webkit-scrollbar {
+  display: none;
+}
+
+.drawith__PHONE .editor-layers__add-new {
+  width: calc(var(--layers-container-width) - 1rem);
+  --layers-new-button-height: calc(var(--layers-container-width) - 1rem);
+  transform: translate3d(0px, 0px, 0px);
+}
+.drawith__LAYERS_FULL .editor-layers__add-new {
+  opacity: 0.5;
+  cursor: auto;
+}
+.editor-layers__add-new {
+  width: calc(var(--layers-container-width) / 2);
+  height: var(--layers-new-button-height);
+  transform: translate3d(0px, calc(var(--layers-new-button-height) * -1.2), 0px);
+  border-radius: 50%;
+  background-color: var(--palette-white);
+  margin: auto;
+  border: solid 0.05rem var(--palette-gray-5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+}
+.editor-layers__add-new > div {
+  background-color: var(--palette-gray-1);
+  width: 40%;
+  height: 40%;
+  display: inline-block;
+}
+
+.drawith__PHONE .editor-layers__list {
+  transform: translate3d(0px, 0px, 0px);
+  margin-top: 1rem;
+}
+.editor-layers__list {
+  max-height: var(--layers-list-height);
+  overflow: auto;
+  scroll-behavior: smooth;
+  -webkit-overflow-scrolling: touch;
+  transform: translate3d(0px, calc(var(--layers-new-button-height) * -1), 0px);
+}
+
+.drawith__PHONE .editor-layers__layer {
+  width: calc(var(--layers-container-width) - 1rem);
+  height: calc(var(--layers-container-width) - 1rem);
+  margin: 1rem auto 0rem;
+}
+.editor-layers__layer {
+  position: relative;
+  width: calc(var(--layers-container-width) - 2rem);
+  height: calc(var(--layers-container-width) - 2rem);
+  border-radius: 1rem;
+  background-color: var(--palette-white);
+  margin: 1.5rem auto 0rem;
+  transition: all var(--slide-transition);
+  overflow: hidden;
+  opacity: 0.6;
+}
+.editor-layers__layer-active.editor-layers__layer {
+  opacity: 1;
+}
+.editor-layers__layer.editor-layers__layer-yours {
+  cursor: pointer;
+  border: solid 0.15rem var(--palette-gray-4);
+}
+.editor-layers__layer.editor-layers__layer-coworker {
+  cursor: not-allowed;
+  border: solid 0.15rem var(--palette-gray-5);
+}
+.editor-layers__layer.editor-layers__layer-yours.editor-layers__layer-selected {
+  border: solid 0.2rem var(--palette-green-0);
+  width: calc(var(--layers-container-width) - 0.5rem);
+  height: calc(var(--layers-container-width) - 0.5rem);
+}
+.editor-layers__layer.editor-layers__layer-coworker.editor-layers__layer-selected {
+  border: solid 0.15rem var(--palette-gray-4);
+  width: calc(var(--layers-container-width) - 1.25rem);
+  height: calc(var(--layers-container-width) - 1.25rem);
+}
+
+.editor-layers__layer-active .editor-layers__layer-preview {
+  opacity: 1;
+}
+.drawith__PHONE .editor-layers__layer-preview {
+  max-height: 100%;
+  top: 50%;
+}
+.editor-layers__layer-preview {
+  position: absolute;
+  left: 50%;
+  top: calc((100% - 3rem) / 2);
+  transform: translate3d(-50%, -50%, 0px);
+  max-width: 100%;
+  max-height: calc(100% - 3rem);
+  opacity: 0.6;
+  transition: opacity var(--slide-transition);
+
+  background-position: center;
+  background-size: contain;
+  background-repeat: no-repeat;
+}
+
+.editor-layers__layer-coworker .editor-layers__layer-coworker-icon {
+  border-bottom-right-radius: 0.5rem;
+  left: 0rem;
+}
+.editor-layers__layer-coworker .editor-layers__layer-selected-icon {
+  border-bottom-left-radius: 0.5rem;
+  right: 0rem;
+}
+.editor-layers__layer-coworker .editor-layers__layer-coworker-icon,
+.editor-layers__layer-coworker .editor-layers__layer-selected-icon {
+  display: inline-block;
+  position: absolute;
+  width: 2rem;
+  height: 2rem;
+  top: 0rem;
+  background-color: var(--palette-gray-6);
+}
+.editor-layers__layer-coworker-icon div,
+.editor-layers__layer-selected-icon div {
+  width: 80%;
+  height: 80%;
+  margin: 10%;
+}
+.editor-layers__layer-yours .editor-layers__layer-coworker-icon,
+.editor-layers__layer-yours .editor-layers__layer-selected-icon,
+.editor-layers__layer-coworker:not(.editor-layers__layer-selected) .editor-layers__layer-selected-icon {
+  display: none;
+}
+
+.drawith__PHONE .editor-layers__layer-options {
+  display: none;
+}
+.editor-layers__layer-options {
+  width: 100%;
+  height: 3rem;
+  position: absolute;
+  bottom: 0px;
+  background-color: var(--palette-gray-6);
+}
+.editor-layers__layer-options-button {
+  display: inline-block;
+  width: 2.75rem;
+  height: 2.75rem;
+  margin-top: 0.125rem;
+  margin-left: 0.5rem;
+  vertical-align: top;
+}
+.editor-layers__layer-coworker .editor-layers__layer-options-button {
+  opacity: 0.3;
+  cursor: not-allowed;
+}
+.editor-layers__layer-options-name {
+  display: inline-block;
+  height: 100%;
+  width: calc(100% - 4rem);
+  vertical-align: top;
+}
+.editor-layers__layer-options-name input {
+  background-color: transparent;
+  border: none;
+  width: 100%;
+  height: 3rem;
+  text-align: center;
+  font-family: sans-serif;
+  font-size: 1.1rem;
+}
+.editor-layers__layer-coworker .editor-layers__layer-options-name input {
+  cursor: not-allowed;
+}
+.editor-layers__layer-yours .editor-layers__layer-options-name input {
+  cursor: pointer;
+}
+
+/* PARAMS */
+.drawith__EDITOR-FULLSCREEN .editor-layers__params-container {
+  transform: translate3d(200%, -50%, 0px);
+}
+.editor-layers__params-container {
+  width: var(--editor-tools-width);
+  top: 50%;
+  right: calc(var(--editor-tools-width) / 2 + var(--editor-page-margin));
+  transform: translate3d(0%, -50%, 0px);
+  display: inline-flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  align-items: center;
+}
+.editor-layers__params-container.params-container-visible {
+  right: calc(2 * (var(--editor-tools-width) + 1.5 * var(--editor-page-margin)));
+}
+.drawith__PHONE .editor-layers__params-container {
+  flex-wrap: wrap;
+  max-height: calc(var(--100vh) * 0.75);
+  width: calc(var(--editor-tools-width) * 2);
+}
+.drawith__PHONE .editor-layers__params-container.params-container-visible {
+  right: calc(1 * (var(--editor-tools-width) + 1 * var(--editor-page-margin)));
+}
+
+.editor-layers__params-container > * {
+  flex-shrink: 0;
+  display: block;
+}
+.drawith__PHONE .editor-layers__params-name {
+  display: none;
+}
+.drawith__PHONE .editor-layers__params-visibility {
+  display: inline-block;
+}
+.editor-layers__params-visibility {
+  display: none;
+}
+.editor-layers__params-visibility,
+.editor-layers__params-name,
+.editor-layers__params-duplicate,
+.editor-layers__params-delete,
+.editor-layers__params-merge-down,
+.editor-layers__params-resize,
+.editor-layers__params-send,
+.editor-layers__params-flip-horizontal,
+.editor-layers__params-flip-vertical {
+  width: 3rem;
+  height: 3rem;
+  margin: 1rem;
+  cursor: pointer;
+}
+.editor-layers__params-gco {
+  width: 3.5rem;
+  height: 3.5rem;
+  margin: 0.5rem;
+  cursor: pointer;
+}
+.drawith__PHONE .editor-layers__opacity-slider {
+  margin-top: 4rem;
+}
+.editor-layers__opacity-slider {
+  margin: 2rem;
+}
+.editor-layers__params-send {
+  display: none;
+}
+.drawith__EDITOR-COWORKING .editor-layers__params-send {
+  display: block;
+}
+.drawith__LAYERS_FULL .editor-layers__params-duplicate {
+  opacity: 0.5;
+  cursor: auto;
+}
+
+
+/* TOOLBAR BUTTONS */
+.editor-layers__resize-button {
+  width: 3rem !important;
+  height: 3rem !important;
+}

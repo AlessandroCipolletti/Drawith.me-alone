@@ -1,0 +1,78 @@
+.folder__drawing {
+  border: solid 1px var(--palette-gray-4);
+  border-radius: 0.75rem;
+  box-shadow:
+    0 1px 1px rgba(0, 0, 0, 0.25),
+    0 2px 2px rgba(0, 0, 0, 0.2),
+    0 4px 4px rgba(0, 0, 0, 0.15);
+  margin: 2rem 0rem;
+  cursor: pointer;
+  background: url('../../../static/img/paper/white.png');
+  background-size: 43px;
+  background-repeat: repeat;
+  position: relative;
+  overflow: hidden;
+}
+
+.folder__drawings-container .folder__drawing {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.folder__drawing-preview {
+  max-width: 110%;
+  max-height: 110%;
+}
+.folder__drawing .spinner {
+  display: inline-block;
+  margin: 0.5rem;
+  width: 2rem;
+  height: 2rem;
+}
+
+.folder__drawing-select-icon {
+  position: absolute;
+  top: 0rem;
+  right: 0rem;
+  margin: 0.75rem;
+  height: 2.5rem;
+  width: 2.5rem;
+  border: solid 0.1rem white;
+  background-color: white;
+  border-radius: 50%;
+  background-size: 60%;
+  background-position: center;
+  background-repeat: no-repeat;
+  box-shadow: 0px 0px 0.2rem 0px rgba(0,0,0,0.75);
+  /*, inset 0px 0px 0.2rem 0px rgba(0,0,0,0.75);*/
+  display: none;
+}
+
+.drawith__FOLDER-SELECT-MODE .folder__drawing:not(.folder__drawing-selected) {
+  filter: opacity(70%);
+}
+.drawith__FOLDER-SELECT-MODE .folder__drawing-select-icon {
+  display: block;
+}
+.drawith__FOLDER-SELECT-MODE .folder__drawing-selected .folder__drawing-select-icon {
+  background-color: rgb(25, 110, 225);
+  background-image: url('../../../static/icons/png/select.png');
+}
+
+.drawith__DESKTOP .folder__drawing,
+.drawith__TABLET .folder__drawing {
+  width: 20vw;
+  height: 20vh;
+}
+.drawith__PHONE .folder__drawing {
+  margin: 1rem 0rem;
+}
+.drawith__PHONE.drawith__PORTRAIT .folder__drawing {
+  width: 44vw;
+  height: 16vh;
+}
+.drawith__PHONE.drawith__LANDSCAPE .folder__drawing {
+  width: 25vw;
+  height: 35vh;
+}

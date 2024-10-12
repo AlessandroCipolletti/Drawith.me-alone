@@ -1,0 +1,149 @@
+.editor__tool-ruler {
+  position: absolute;
+  z-index: 550;
+  top: 50%;
+  left: 50%;
+  height: var(--ruler-height);
+  margin-top: calc(var(--ruler-height) / -2);
+
+  background-size: var(--one-cm-size-by-scale) 100%;
+  background-repeat: repeat-x;
+  /* background-position: center top; */
+  background-position: 0% 0%;
+  box-shadow: 0px 0px 5px 0px rgba(0,0,0,0.3);
+  border-radius: 0.75rem;
+}
+
+.drawith__EDITOR-NO-ZOOM .editor__tool-ruler,
+.drawith__EDITOR-ZOOM-IN .editor__tool-ruler {
+  background-image: url("../../../../static/img/ruler-zoom-in.png");
+}
+.drawith__EDITOR-ZOOM-OUT .editor__tool-ruler {
+  background-image: url("../../../../static/img/ruler-zoom-out.png");
+}
+
+.editor__tool-ruler-gesture-one,
+.editor__tool-ruler-gesture-two,
+.editor__tool-ruler-origin,
+.editor__tool-ruler-start,
+.editor__tool-ruler-center,
+.editor__tool-ruler-bottom {
+  width: 1px;
+  height: 1px;
+  background-color: transparent;
+  position: absolute;
+  z-index: 600;
+}
+
+.editor__tool-ruler-origin {
+  top: -0.1rem; /* 2px */
+  left: 0px;
+}
+
+.editor__tool-ruler-start {
+  top: 50%;
+  left: 0px;
+}
+
+.editor__tool-ruler-center {
+  top: 50%;
+  left: 50%;
+}
+
+.editor__tool-ruler-bottom {
+  top: calc(100% + 0.15rem); /* 3px */
+  left: 0px;
+}
+
+.editor__tool-ruler-gesture-one,
+.editor__tool-ruler-gesture-two {
+  left: -500px;
+  top: -500px;
+}
+
+.editor__tool-ruler-level,
+.editor__tool-ruler-level-selected {
+  border-radius: 50%;
+  width: 6rem; /* 120px */
+  height: 6rem; /* 120px */
+  top: 50%;
+  left: 50%;
+  opacity: 0.5;
+  position: absolute;
+  z-index: 700;
+}
+.drawith__PHONE .editor__tool-ruler-level,
+.drawith__PHONE .editor__tool-ruler-level-selected {
+  width: 4rem;
+  height: 4rem;
+}
+.editor__tool-ruler-level {
+  margin-top: -3.05rem; /* 61px */
+  margin-left: -3.05rem; /* 61px */
+  border: solid 0.05rem gray;
+}
+.drawith__PHONE .editor__tool-ruler-level {
+  margin-top: -2.05rem;
+  margin-left: -2.05rem;
+}
+.editor__tool-ruler-level-selected {
+  margin-top: -3.2rem; /* 64px */
+  margin-left: -3.2rem; /* 64px */
+  border: solid 0.2rem gray;
+}
+.drawith__PHONE .editor__tool-ruler-level-selected {
+  margin-top: -2.2rem;
+  margin-left: -2.2rem;
+}
+
+.editor__tool-ruler-level-value {
+  line-height:  6rem; /* 120px */
+  width: 6rem; /* 120px */
+  text-align: center;
+  font-size: 1.75rem;
+  font-family: sans-serif;
+  z-index: 700;
+}
+.drawith__PHONE .editor__tool-ruler-level-value {
+  line-height: 4rem;
+  width: 4rem;
+}
+
+.editor__tool-ruler-perpendicular,
+.editor__tool-ruler-specular {
+  border-radius: 50%;
+  width: 5rem; /* 100px */
+  height: 5rem; /* 100px */
+  top: 50%;
+  margin-top: -2.55rem; /* 51px */
+  margin-left: -2.55rem; /* 51px */
+  opacity: 0.5;
+  position: absolute;
+  z-index: 700;
+  background-size: 70%;
+  background-repeat: no-repeat;
+  background-position: center;
+  border: solid 1px gray;
+}
+.drawith__PHONE .editor__tool-ruler-perpendicular,
+.drawith__PHONE .editor__tool-ruler-specular {
+  width: 3rem;
+  height: 3rem;
+  margin-top: -1.55rem;
+  margin-left: -1.55rem;
+}
+
+.editor__tool-ruler-perpendicular {
+  left: calc(50% - 8rem);
+  background-image: url("../../../../static/icons/png/perpendicular.png");
+}
+.drawith__PHONE .editor__tool-ruler-perpendicular {
+  left: calc(50% - 5rem);
+}
+.editor__tool-ruler-specular {
+  left: calc(50% + 8rem);
+  background-image: url("../../../../static/icons/png/specular.png");
+}
+.drawith__PHONE .editor__tool-ruler-specular {
+  left: calc(50% + 5rem);
+}

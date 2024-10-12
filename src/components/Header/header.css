@@ -1,0 +1,66 @@
+.header__container {
+  position: absolute;
+  width: 100%;
+  height: var(--header-height);
+  top: 0rem;
+  left: 0rem;
+  z-index: 600;
+}
+
+.header__logo {
+  height: 100%;
+  width: 50%;
+  margin: auto;
+  background-image: url("../../static/img/header-logo-beta.png");
+  background-position: center 65%;
+  background-repeat: no-repeat;
+  background-size: 0rem;
+  opacity: 1;
+  transition: opacity var(--options-show-transition);
+}
+.drawith__PHONE .header__logo {
+  background-size: 17rem;
+}
+.drawith__TABLET .header__logo,
+.drawith__DESKTOP .header__logo {
+  background-size: 27rem;
+}
+.drawith__EDITOR-OPEN .header__logo {
+  opacity: 0;
+  display: none;
+}
+
+.header__button {
+  top: 0px;
+  width: 4rem;
+  height: 4rem;
+  margin: 1rem 1.5rem 0.5rem;
+  position: absolute;
+  background-size: 85%;
+  background-repeat: no-repeat;
+  background-position: center;
+  cursor: pointer;
+}
+.header__button.header__button-big {
+  width: 4.5rem;
+  height: 4.5rem;
+  margin: 0.5rem;
+}
+.drawith__PHONE .header__button {
+  margin: 1.5rem 0.75rem 1rem 0.75rem;
+  width: 3rem;
+  height: 3rem;
+}
+.drawith__PHONE .header__button.header__button-big {
+  margin: 0.75rem 0.25rem 0.75rem 0.25rem;
+  width: 4rem;
+  height: 4rem;
+}
+
+.drawith__DRAWING_SYNC .header__refresh-icon {
+  display: block;
+}
+.header__refresh-icon {
+  cursor: auto;
+  display: none;
+}
