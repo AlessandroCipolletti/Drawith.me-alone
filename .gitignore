@@ -1,5 +1,9 @@
-
-/node_modules
+.cache/
+.parcel-cache/
+build/
+node_modules/
+backup/
+**/.DS_Store
+package-lock.json
+.parcel-cache/
 .DS_Store
-/.parcel-cache
-src/.DS_Store
