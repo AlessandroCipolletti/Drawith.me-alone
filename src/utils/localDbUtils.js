@@ -39,12 +39,6 @@ export const emptyDatabase = securizeAsyncFn(async() => {
 
 export const getDeviceLocalData = securizeAsyncFn(async() => ((await LocalDatabase.AppData.toArray())[0]), DEFAULT_LOCAL_DB_ERROR_MSG)
 
-export const addCoworkerWaitingId = securizeAsyncFn(async(coworkerWaitingId) => await LocalDatabase.AppData.where('id').notEqual(0).modify({ coworkerWaitingId }), DEFAULT_LOCAL_DB_ERROR_MSG, 'addCoworkerWaitingId')
-
-export const getCoworkerWaitingId = securizeAsyncFn(async() => ((await LocalDatabase.AppData.toArray())[0]).coworkerWaitingId || false, DEFAULT_LOCAL_DB_ERROR_MSG, 'getCoworkerWaitingId')
-
-export const cleanCoworkerWaitingId = securizeAsyncFn(async() => await LocalDatabase.AppData.where('id').notEqual(0).modify({ coworkerWaitingId: undefined }), DEFAULT_LOCAL_DB_ERROR_MSG, 'cleanCoworkerWaitingId')
-
 export const emptyDrawingsData = securizeAsyncFn(async() => await LocalDatabase.Drawings.clear(), DEFAULT_LOCAL_DB_ERROR_MSG, 'emptyDrawingsData')
 
 export const deleteLocalDrawings = securizeAsyncFn(async(ids = []) => await LocalDatabase.Drawings.where('localDbId').anyOf(ids).delete(), DEFAULT_LOCAL_DB_ERROR_MSG, 'deleteLocalDrawings')
