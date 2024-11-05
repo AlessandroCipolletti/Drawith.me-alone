@@ -13,11 +13,10 @@ import { fadeInElements, fadeOutElements } from 'utils/animationsUtils'
 import { addGlobalStatus, removeGlobalStatus } from 'utils/moduleUtils'
 import { cleanRefs } from 'utils/moduleUtils'
 import { shareImageWithBase64 } from 'utils/imageUtils'
-import { deepCopy, copyTextToClipboard } from 'utils/jsUtils'
+import { deepCopy } from 'utils/jsUtils'
 import { addListScrollClickAndPressHandlers } from 'utils/uiUtils'
 
 import { goToPage } from 'modules/Router'
-import * as Coworking from 'modules/Coworking'
 
 
 const config = {
@@ -28,8 +27,6 @@ const initialState = {
   checkDrawingsInterval: false,
   loadingDrawingsIds: [],
   selectionMode: false,
-  coworkingPopupOpened: false,
-  sendCheckboxChecked: false,
 }
 const refs = {
   container: null,
@@ -38,34 +35,18 @@ const refs = {
   doneButton: null,
   exportButton: null,
   deleteButton: null,
-  sendButton: null,
   topnav: null,
-  coworkingPopup: null,
-  coworkingId: null,
-  copyCoworkingUrlButton: null,
-  copiedCoworkingLabel: null,
-  // sendPopup: null,
-  // sendPopupCheckbox: null,
-  // confirmSendPopupButton: null,
 }
 const labels = {
   select: 'Select',
   done: 'Done',
-  offline: 'OFFLINE',
   areYouSure: 'Are you sure?',
   tapAndHoldOneImage: 'Tap and hold the image to share it',
   tapAndHoldImages: 'Tap and hold an image to share it',
   withWhiteBackground: 'With white background',
   withoutBackground: 'With no background',
-  newDrawing: 'Draw alone',
-  drawWithAFriend: 'Draw with a friend',
+  newDrawing: 'New drawing',
   navbarTitle: 'YOUR DRAWINGS',
-  tapToShare: '^ Double tap to share ^',
-  copied: 'Copied!',
-  coworkingPopupTitle: 'Send this url to a friend to start drawing together',
-  coworkingPopupIstructions1: 'Each unique url works for one session only.',
-  coworkingPopupIstructions2: 'Do not reload the page until your friend has connected.',
-  waitingToReconnect: 'Waiting for connections...',
 }
 
 let toolsButtons = []
@@ -80,56 +61,6 @@ const createNewDrawing = (e) => {
 const openDrawing = async(drawingId) => {
   setSpinner(true)
   goToPage(`editor/open/${drawingId}`)
-}
-
-const copyCoworkingUrl = (() => {
-  let lastTapTimestamp = 0
-  const doubleTapDelay = 250
-  return () => {
-    copyTextToClipboard(refs.coworkingId.innerHTML)
-    const now = Date.now()
-    if (Params.isDesktop || now - lastTapTimestamp < doubleTapDelay) {
-      refs.copyCoworkingUrlButton.classList.add('displayNone')
-      refs.copiedCoworkingLabel.classList.remove('displayNone')
-    }
-    lastTapTimestamp = now
-  }
-})()
-
-const shareCoworkingUrl = (e) => {
-  preventDefault(e)
-  copyCoworkingUrl()
-  if (!Params.isDesktop && navigator.share) {
-    navigator.share({
-      title: 'Let\'s draw together on Drawith.me',
-      // text: 'Let\'s draw together on Drawith.me',
-      url: refs.coworkingId.innerHTML,
-    })
-  }
-}
-
-const onCloseCoworkingPopup = () => {
-  state.coworkingPopupOpened = false
-}
-
-export const closeCoworkingPopup = () => {
-  if (state.coworkingPopupOpened) {
-    onCloseCoworkingPopup()
-    Messages.panel(refs.coworkingPopup)
-  }
-}
-
-const openCoworkingPopup = (e) => {
-  preventDefault(e)
-  if (Coworking.isOnline()) {
-    state.coworkingPopupOpened = true
-    refs.coworkingId.innerHTML = `${document.location.origin}${document.location.pathname}?S=${Coworking.getSocketId()}`
-    Messages.panel(refs.coworkingPopup, {
-      onClose: onCloseCoworkingPopup,
-    })
-    refs.copyCoworkingUrlButton.classList.remove('displayNone')
-    refs.copiedCoworkingLabel.classList.add('displayNone')
-  }
 }
 
 const onDrawingClick = (e) => {
@@ -171,8 +102,6 @@ const onTopnavTouchStart = (e) => {
     exportButtonClick()
   } else if (e.target === refs.deleteButton) {
     deleteButtonClick()
-  // } else if (e.target === refs.sendButton) {
-  //   sendButtonClick()
   }
 }
 
@@ -310,21 +239,11 @@ const initDom = async() => {
   refs.deleteButton = refs.container.querySelector('.folder__topbar-button-delete')
   refs.topnav = refs.container.querySelector('.folder__topbar')
   refs.drawingsContainer = refs.container.querySelector('.folder__drawings-container')
-  refs.coworkingPopup = refs.container.querySelector('.folder__coworking-popup')
-  refs.coworkingId = refs.coworkingPopup.querySelector('.folder__coworking-popup-id')
-  refs.copyCoworkingUrlButton = refs.coworkingPopup.querySelector('.folder__coworking-popup-copy')
-  refs.copiedCoworkingLabel = refs.coworkingPopup.querySelector('.folder__coworking-popup-copied')
   refs.topnav.addEventListener(Params.eventStart, onTopnavTouchStart, true)
-  refs.coworkingId.addEventListener(Params.eventStart, shareCoworkingUrl)
-  refs.copyCoworkingUrlButton.addEventListener(Params.eventStart, shareCoworkingUrl)
-  refs.coworkingPopup.querySelector('.folder__coworking-copy-icon').addEventListener(Params.eventStart, shareCoworkingUrl)
-  refs.coworkingPopup.addEventListener(Params.eventStart, preventDefault)
   refs.container.querySelector('.folder__drawing-new-drawing').addEventListener(Params.eventStart, createNewDrawing)
-  refs.container.querySelector('.folder__drawing-new-coworking').addEventListener(Params.eventStart, openCoworkingPopup)
   refs.container.querySelector('.folder__new-container').addEventListener(Params.eventStart, preventDefault)
-  refs.coworkingPopup.remove()
   addListScrollClickAndPressHandlers(refs.drawingsContainer, onDrawingClick, onDrawingLongPress)
-  toolsButtons.push(refs.exportButton, refs.deleteButton /*, refs.sendButton */)
+  toolsButtons.push(refs.exportButton, refs.deleteButton)
 }
 
 export const open = async() => {
@@ -340,7 +259,6 @@ export const open = async() => {
 export const close = async() => {
   await fadeOutElements(refs.container)
   removeGlobalStatus('drawith__FOLDER-OPEN')
-  closeCoworkingPopup()
   clearInterval(state.checkDrawingsInterval)
   toolsButtons = []
   state = {}
