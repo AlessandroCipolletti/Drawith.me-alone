@@ -63,12 +63,6 @@ Params.init = (appState) => {
   Params.isHighPerformanceDesktop = Params.isDesktop && (Params.isLocal || (browserName === 'Chrome' && navigator.hardwareConcurrency >= 8))
   Params.deviceHasGoodPerformance = Params.isHighPerformanceTablet || Params.isHighPerformanceDesktop
 
-  // peer RTC config
-  Params.peerServerHost = '0.peerjs.com'
-  Params.peerServerPort = 443
-  Params.peerServerPath = '/'
-  Params.peerPingInterval = 5000,
-
   // Local db name
   Params.localDbName = 'drawith.me_DB'
 }
