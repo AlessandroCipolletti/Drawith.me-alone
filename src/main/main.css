@@ -378,10 +378,6 @@ iframe {
   mask-image: url("../static/icons/svg/info.svg");
   -webkit-mask-image: url("../static/icons/svg/info.svg");
 }
-.svg-icon-send {
-  mask-image: url("../static/icons/svg/send.svg");
-  -webkit-mask-image: url("../static/icons/svg/send.svg");
-}
 .svg-icon-rename {
   mask-image: url("../static/icons/svg/rename.svg");
   -webkit-mask-image: url("../static/icons/svg/rename.svg");
@@ -505,10 +501,6 @@ iframe {
 .svg-icon-flip-vertical {
   mask-image: url("../static/icons/svg/flip-v.svg");
   -webkit-mask-image: url("../static/icons/svg/flip-v.svg");
-}
-.svg-icon-user {
-  mask-image: url("../static/icons/svg/user.svg");
-  -webkit-mask-image: url("../static/icons/svg/user.svg");
 }
 .svg-icon-drawing {
   mask-image: url("../static/icons/svg/drawing.svg");

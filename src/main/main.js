@@ -7,10 +7,8 @@ import * as Theme from './Theme'
 import initPolyfills from './polyfills'
 import { round } from 'utils/mathUtils'
 import * as Messages from 'modules/Messages'
-import * as Coworking from 'modules/Coworking'
 import { initLocalDb } from 'utils/localDbUtils'
 import { delay, securizeAsyncFn } from 'utils/jsUtils'
-import { init as initCoworking } from 'modules/Coworking'
 import { init as initImageUtils } from 'utils/imageUtils'
 import { init as initHeader, menuButtonAnimations } from 'components/Header'
 import initDomUtils, { loadTemplate, preventDefault, setSpinner, preventMoveDefaultIfNeeded } from 'utils/domUtils'
@@ -53,7 +51,6 @@ const attachRotationHandler = () => {
   // This small code takes care of this to call handleGlobalResize just one time.
   const handleRotation = debounce((event) => {
     handleGlobalResize(event)
-    Coworking.updateClientEnvironment()
   }, 200)
 
   if ('onorientationchange' in window) {
@@ -262,7 +259,6 @@ const init = securizeAsyncFn(async(props = {}) => {
       initDomUtils()
       initImageUtils()
       addEnviromentGlobalStatus()
-      await initCoworking()
       openCurrentUrlPage()
     } else {
       openPageNotSupported()
