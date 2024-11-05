@@ -2,18 +2,14 @@ import { osVersion, isAndroid, isWearable, isSmartTV, browserVersion, isIOS, isI
 
 import { config as supportedVersions } from 'pages/NotSupported/config'
 import * as Folder from 'pages/Folder'
-// import * as Dashboard from 'pages/Dashboard'
 import * as Editor from 'pages/Editor'
 import * as Info from 'pages/Info'
 import * as NotSupported from 'pages/NotSupported'
-import * as Coworking from 'modules/Coworking'
 import { testDeviceSupported } from 'utils/jsUtils'
 
 const ROUTES = {
   'editor': Editor,
   'folder': Folder,
-  // 'dashboard': Dashboard,
-  'coworking': Coworking,
   'notsupported': NotSupported,
   'info': Info,
 }
@@ -45,17 +41,7 @@ export const openPageAboutUs = () => {
 }
 
 const decryptInitialPathUrl = (path, search) => {
-  const queryParams = new URLSearchParams(search)
   let url = path
-
-  // some urls can be shortened for better sharing.
-  // example: app.drawith.me/E/abc123  ==>  Editor Coworking with room id 'abc123'
-
-  // Editor Coworking
-  // url = url.replace('/E/', '/coworking/requestSession/') // old
-  if (queryParams.get('S')) {
-    url = `${url}/coworking/requestSession/${queryParams.get('S')}`.replace('//', '/')
-  }
 
   // Editor to folder
   if (url.endsWith('/editor') || url.endsWith('/editor/')) {
