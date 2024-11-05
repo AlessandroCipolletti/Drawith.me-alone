@@ -4,83 +4,9 @@ import { config, currentCanvasHasZoom } from 'pages/Editor'
 import { round, getNumberInBetween, getOriginalCoordsFromScaleRotation, getDistanceBetweenThreePoints, getAngleRadBetweenTwoPoints, rotateCoords, convertAngleDegToRad } from 'utils/mathUtils'
 import { addGlobalStatus, removeGlobalStatus } from 'utils/moduleUtils'
 import { getEventCoordX, getEventCoordY } from 'utils/domUtils'
-import { setImageShapeIfNeeded, getNewContextForCanvas } from 'utils/canvasUtils'
-import { cleanRefs } from 'utils/moduleUtils'
 import * as Ruler from './components/Ruler'
-import * as Layers from './components/Layers'
 import { spacing } from 'main/Theme'
 import { TOUCH_TYPE_STYLUS } from 'main/constants'
-import { getOneToolVersionCompleteProps } from 'pages/Editor/components/Tools'
-
-
-const refs = {
-  coworkingCanvas: null,
-  coworkingContext: null,
-}
-
-export const initEditorUtils = (width, height) => {
-  refs.coworkingCanvas = document.createElement('canvas')
-  refs.coworkingCanvas.width = width
-  refs.coworkingCanvas.height = height
-  refs.coworkingContext = getNewContextForCanvas(refs.coworkingCanvas)
-}
-
-export const cleanEditorUtils = () => {
-  cleanRefs(refs)
-}
-
-export const drawMultipleCoworkingSteps = (() => {
-  let currentCoworkingToolName = ''
-  let currentCoworkingToolVersion = -1
-  let currentCoworkingToolProps = {}
-
-  return async(layerId, steps, tool, fns) => {
-    const destinationContext = Layers.getLayerContext(layerId)
-
-    // Recupero lo strumento usato da questi step, se è diverso dal precedente
-    if (currentCoworkingToolName !== tool.name || currentCoworkingToolVersion !== tool.version) {
-      currentCoworkingToolProps = getOneToolVersionCompleteProps(tool.name, tool.version, {
-        color: tool.color,
-        globalCompositeOperation: tool.globalCompositeOperation,
-        frameImageName: tool.frameImageName,
-        ...tool.customProps,
-      })
-    }
-
-    // Preparo l'immagine da usare con questo strumento, se diversa dalla precedente
-    if (currentCoworkingToolProps.frameImageName) {
-      setImageShapeIfNeeded(refs.coworkingContext, currentCoworkingToolProps.frameImageFile, currentCoworkingToolProps.frameImageName, currentCoworkingToolProps.color)
-    }
-
-    // Svuoto il canvas che uso per il coworking
-    refs.coworkingContext.clearRect(0, 0, refs.coworkingCanvas.width, refs.coworkingCanvas.height)
-
-    // Se il tratto attuale non è una semplice aggiunta, devo mettere nel canvas del coworking tutto il disegno attuale.
-    // Per esempio la gomma per funzionare deve avere un disegno da cancellare, se no non apporta alcuna differenza.
-    // Anche il bucket ha bisogno del resto del disegno per funzionare bene.
-    if (currentCoworkingToolProps.name === 'bucket') {
-      await fns.bucket(layerId, steps[0].x, steps[0].y, currentCoworkingToolProps.color)
-    } else { // normal steps
-      if (currentCoworkingToolProps.globalCompositeOperation !== 'source-over') {
-        refs.coworkingContext.globalCompositeOperation = 'source-over'
-        refs.coworkingContext.globalAlpha = 1
-        refs.coworkingContext.drawImage(destinationContext.canvas, 0, 0)
-
-        steps.forEach(step => fns[step.type](refs.coworkingContext, step, currentCoworkingToolProps))
-
-        destinationContext.clearRect(0, 0, destinationContext.canvas.width, destinationContext.canvas.height)
-      } else {
-        steps.forEach(step => fns[step.type](refs.coworkingContext, step, currentCoworkingToolProps))
-      }
-
-      destinationContext.globalAlpha = 1
-      destinationContext.globalCompositeOperation = 'source-over'
-      destinationContext.drawImage(refs.coworkingCanvas, 0, 0)
-    }
-  }
-})()
-
-
 
 const getTouchEventData = (touchEvent, lastStep, offsetX = 0, offsetY = 0) => {
   const data = {}

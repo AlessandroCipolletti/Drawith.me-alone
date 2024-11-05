@@ -121,13 +121,6 @@
 .editor-tools__tool-redo {
   background-image: url("../../../../static/icons/png/redo.png");
 }
-/* .editor-tools__tool-coworkingStart {
-  background-image: url("../../../../static/icons/png/coworkingStart.png");
-}
-.editor-tools__tool-coworkingStop {
-  background-image: url("../../../../static/icons/png/coworkingStop.png");
-  display: none;
-} */
 /* .editor-tools__tool-save {
   background-image: url("../../../../static/icons/png/save.png");
 } */
@@ -150,13 +143,6 @@
 .editor-tools__tool-paper.paper-points {
   background-image: url("../../../../static/icons/png/paper_points.png");
 }
-
-/* .drawith__EDITOR-COWORKING .editor-tools__tool-coworkingStop {
-  display: block;
-}
-.drawith__EDITOR-COWORKING .editor-tools__tool-coworkingStart {
-  display: none;
-} */
 
 
 .editor-tools__versions-button {

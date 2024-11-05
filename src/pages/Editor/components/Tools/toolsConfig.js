@@ -217,7 +217,6 @@ const toolsConfigInit = () => ({
     minAlpha: 0.04,
     alphaForceFactor: 0.5,
     maxSizeThatNeedsToAdaptLine: 0,
-    stepsToUpdateCoworking: 10,
   }),
   eraser: getCustomTool({
     name: 'eraser',

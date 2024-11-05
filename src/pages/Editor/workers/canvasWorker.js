@@ -26,6 +26,7 @@ self.addEventListener('message', async (event) => {
 
   // 2 - export the smallest possible bitmap
   const { minX, maxX, minY, maxY } = await findImageContentCoords(canvas)
+  // eslint-disable-next-line
   let [bitmap, x, y, w, h] = cropImageWithMargin(canvas, minX, minY, maxX, maxY, 0)
   bitmap = await createImageBitmap(bitmap)
 

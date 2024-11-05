@@ -33,7 +33,6 @@ export const toolDefaultProps = {
   pxToAdaptLine: 15,
   msToAdaptLine: 10,
   stepsToAdaptLine: 5,
-  stepsToUpdateCoworking: 5,
   hasSizeAndAlpha: true,
 
   customProps: {},

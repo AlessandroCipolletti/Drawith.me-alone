@@ -2,7 +2,6 @@ const editorTemplate = require('./editor.tpl')
 import './editor.css'
 
 import Params from 'main/Params'
-import * as Coworking from 'modules/Coworking'
 import * as Debug from 'modules/Debug'
 import * as Messages from 'modules/Messages'
 import * as Header from 'components/Header'
@@ -14,7 +13,7 @@ import * as Ruler from './components/Ruler'
 import { addPreventPageRefresh, removePreventPageRefresh } from 'main/main'
 import { setSpinner, getEventCoordX, getEventCoordY, loadTemplate, preventDefault, getDomRect } from 'utils/domUtils'
 import { fadeInElements, fadeOutElements } from 'utils/animationsUtils'
-import { addGlobalStatus, removeGlobalStatus, toggleGlobalStatus } from 'utils/moduleUtils'
+import { addGlobalStatus, removeGlobalStatus } from 'utils/moduleUtils'
 import { round, getNumberInBetween, getOriginalCoordsFromScaleRotation, getAverage, roundAngleForSteps } from 'utils/mathUtils'
 import { rgbToHex } from 'utils/colorsUtils'
 import { saveDrawingToDB, getOneDrawing, saveDrawingPaletteColors } from 'utils/localDbUtils'
@@ -23,26 +22,13 @@ import { handlePointerEvents } from 'utils/pointerEventsUtils'
 import { delay, noop, deepCopy } from 'utils/jsUtils'
 import { addResizeBulletsHandlers } from 'utils/uiUtils'
 import { init as initCanvasUtils, remove as removeCanvasUtils, fillWithBucket, setImageShapeIfNeeded, drawCurvedFunctionLine, cleanBucketHistory, toolShapesDrawFns, getCanvasColorAtPx, fillCompletely, getNewContextForCanvas } from 'utils/canvasUtils'
-import { initEditorUtils, cleanEditorUtils, drawMultipleCoworkingSteps, updateCurrentTouchData, getStepData, updateEditorZoomGlobalState, shouldThisStepMoveAdaptLine, initState, initCanvasOffset, findValueWithMagnetism, applyRationResizeMagnetism, getAltitudeFactorFromAngle, updateLastStepData } from './editorUtils'
+import { updateCurrentTouchData, getStepData, updateEditorZoomGlobalState, shouldThisStepMoveAdaptLine, initState, initCanvasOffset, findValueWithMagnetism, applyRationResizeMagnetism, getAltitudeFactorFromAngle, updateLastStepData } from './editorUtils'
 import { toolDefaultProps } from './config'
 import { openPageFolder } from 'modules/Router'
 import { TOUCH_TYPE_STYLUS, TOUCH_TYPE_FINGER } from 'main/constants'
-import { spacing } from 'main/Theme'
 
 
 /*
-  ----- COWORKING MULTI-LAYERS -----
-    - Trasferire un layer all'altro utente
-    - Step dell'altro utente disegnati su offscreen canvas.
-    - Check layers history length diviso per coworking
-    - Check why il coworker all'inizio ha due step nell'history
-    - Se ricevo un undo ma ho l'history vuoto, meglio prevenire e non fare un cazzo.
-
-  ----- COWORKING DA DISEGNO ESISTENTE -----
-    - Non avendo più un server in mezzo, i due utenti devono essere connessi allo stesso momento. Quindi l'url è sempre uno solo per ogni utente: quello col suo peerId.
-      Al momento di ricevere una connessione dall'esterno, se sei già nell'editor con un disegno aperto, lo sincronizzi con l'altro utente e gli mandi tutti i layers.
-      Al massimo potrei fare che all'apertura dell'app la prima volta, ti chiedo come ti chiami. E quando si riceve una connessione, compare il messaggio "picopllino vuole connettersi con te, accetti?"
-      Da Folder puoi copiare il link, ma anche da dentro l'editor ci dev'essere un pulsante per aprire o chiudere la connessione.
 
   ----- BUGS -----
     - non si raggiungono più i 120fps manco da solo
@@ -51,7 +37,6 @@ import { spacing } from 'main/Theme'
     - la preview del size ed alpha del tool, deve funzionare con requestAnimationFrame o qualcosa del genere. Altrimenti è troppo lento
     - Quando modifico un disegno e salvo, la fase 1 viene salvata con spinner. Poi il folder si apre con il disegno senza spinner. E poi parte la fase due del salvataggio
         Aggiungendo nuovamente lo spinner sul disegno.
-    - Se apro due volte un link di coworking, all'host viene chiusa e riaperta la connessione, invece che rifiutarla.
 */
 
 
@@ -171,7 +156,6 @@ const initialState = {
   drawnStepsSinceDraft: 0,
   draftInterval: false,
   currentSavingDraw: false,
-  stepsSinceLastCoworkingUpdate: 0,
   localDbDrawId: false,
   isSavingToGoToFolder: false,
   currentToolProps: {
@@ -217,40 +201,6 @@ const labels = {
   copySaved: 'New copy saved',
   copyError: 'An error occurred during saving',
   savingError: 'An error occurred during saving',
-  areYouSureToCloseCoworking: 'Are you sure to close the drawing session?',
-  youHaveDifferentScreenSizes: 'You and your friend have different screen sizes',
-}
-
-export let coworking
-
-
-const stepDataKeys = ['type', 'x', 'y', 'midX', 'midY', 'size', 'alpha', 'rotation', 'oldSize', 'oldAlpha', 'oldRotation', 'oldMidX', 'oldMidY', 'oldX', 'oldY', 'stepLength']
-const addTouchStepDataKeys = (stepDataArray) => Object.fromEntries(stepDataArray.map((v, i) => [stepDataKeys[i], v]))
-const removeTouchStepDataKeys = (stepData) => Object.values(stepData).filter(e => typeof e !== 'undefined').map(e => round(e, 4) || e)
-const globalCompositeOperationValues = ['source-over', 'destination-out', 'source-atop']
-const addToolDataKeys = (toolDataArray) => ({
-  name: toolDataArray[0],
-  version: toolDataArray[1],
-  color: toolDataArray[2],
-  globalCompositeOperation: globalCompositeOperationValues[toolDataArray[3]],
-  frameImageName: toolDataArray[4],
-  customProps: toolDataArray[5],
-})
-const removeToolDataKeys = (toolData) => [toolData.name, toolData.version, toolData.color, globalCompositeOperationValues.indexOf(toolData.globalCompositeOperation), toolData.frameImageName, toolData.customProps]
-export const drawCoworkingMultipleStepsData = (data) => {
-  if (state?.pageOpened) {
-    requestAnimationFrame(() => {
-      drawMultipleCoworkingSteps(data.layerId, data.steps.map(addTouchStepDataKeys), addToolDataKeys(data.tool), {
-        start: drawStepStart,
-        move: drawStepMove,
-        end: drawStepEnd,
-        bucket: receiveBucketFromCoworker,
-      })
-      if (data.steps.find(step => step[0] === 'end')) {
-        requestAnimationFrame(() => Layers.addLayerHistoryContentChangedStep(data.layerId)) // qui chiedo a Layers.js di aggiornare le coordinate del contenuto del layer
-      }
-    })
-  }
 }
 
 const getResizeState = () => deepCopy(state.resizeMode)
@@ -276,42 +226,18 @@ export const clear = () => {
   console.clear()
 }
 
-const receiveBucketFromCoworker = async(layerId, x, y, color) => {
-  const context = Layers.getLayerContext(layerId)
-  if (Layers.isYourLayerEmpty(layerId)) {
-    fillCompletely(context, color, context.canvas.width, context.canvas.height)
-  } else {
-    await fillWithBucket(context, x, y, color, context.canvas.width, context.canvas.height)
-  }
-  await Layers.addLayerHistoryContentChangedStep(layerId)
-}
-
-const useBucket = async(context, x, y, color, sendForCoworking = true) => {
+const useBucket = async(context, x, y, color) => {
   if (coordsAreInsideLayer(x, y)) {
-    let hasBeenUsed = false
     if (Layers.isYourLayerEmpty()) {
       // this layer is empty, we can fill it all
       // TODO or entirely colored with just one color
       fillCompletely(context, color, context.canvas.width, context.canvas.height)
-      hasBeenUsed = true
       saveStepHistory()
     } else { // this layer has already been used, so bucket must be fully processed
       const res = fillWithBucket(context, x, y, color, context.canvas.width, context.canvas.height)
-      // qui ho diviso fillWithBucket in due comportamenti diversi.
-      // se i colori sono uguali, non faccio niente e ritorno false.
-      // Ho bisogno di sapere subito (senza await) se il bucket è andato a buon fine per poterlo inviare immediatamente al coworking,
-      // ma devo anche poter salvare lo step solo dopo che il bucket ha finito.
-      // quindi ritorna false | Promise
       if (res) {
-        hasBeenUsed = true
-        // nel caso del bucket lo step lo salvo sempre qui, perché il bucket è asynchrono e
-        // currentTouch.drewSomething è sempre false
         res.then(saveStepHistory)
-        // stesso ragionamento per il coworking che va fatto qui
       }
-    }
-    if (hasBeenUsed && Coworking.isOpen() && sendForCoworking) {
-      sendCoworkingStep({ type: 'start', x, y }, true)
     }
   }
 }
@@ -411,31 +337,26 @@ const getCurrentDrawingInfo = async () => {
 }
 
 export const saveAndGoToFolder = async () => {
-  if (!Coworking.isOpen() || await Messages.confirm(labels.areYouSureToCloseCoworking)) {
-    const madeByCorowking = Coworking.isOpen()
-    setSpinner(true)
-    setDraftInterval(false)
-    Coworking.stop()
-    if (state.modifiedSinceLastSave) {
-      const currentDrawing = await getCurrentDrawingInfo()
-      if (currentDrawing.maxX >= 0) {
-        currentDrawing.layers = []
-        currentDrawing.madeByCorowking = madeByCorowking
-        await saveDrawingToDB(currentDrawing)
-        addPreventPageRefresh()
-        state.isSavingToGoToFolder = true
-        Layers.exportLayers({
-          cleanMemoryAfterwards: true,
-        }).then(layers => {
-          currentDrawing.layers = layers
-          saveDrawingToDB(currentDrawing)
-          state.modifiedSinceLastSave = true
-          removePreventPageRefresh()
-        })
-      }
+  setSpinner(true)
+  setDraftInterval(false)
+  if (state.modifiedSinceLastSave) {
+    const currentDrawing = await getCurrentDrawingInfo()
+    if (currentDrawing.maxX >= 0) {
+      currentDrawing.layers = []
+      await saveDrawingToDB(currentDrawing)
+      addPreventPageRefresh()
+      state.isSavingToGoToFolder = true
+      Layers.exportLayers({
+        cleanMemoryAfterwards: true,
+      }).then(layers => {
+        currentDrawing.layers = layers
+        saveDrawingToDB(currentDrawing)
+        state.modifiedSinceLastSave = true
+        removePreventPageRefresh()
+      })
     }
-    openPageFolder()
   }
+  openPageFolder()
 }
 
 const save = async({
@@ -450,7 +371,6 @@ const save = async({
       if (asCopy) {
         delete currentDrawing.localDbId
       }
-      currentDrawing.madeByCorowking = Coworking.isOpen()
       currentDrawing.layers = await Layers.exportLayers()
       const savedId = await saveDrawingToDB(currentDrawing)
       if (savedId) {
@@ -740,27 +660,6 @@ const makeTouchEndNearRuler = (x, y) => {
   handleTouchEndStep(refs.layerContext)
 }
 
-const sendCoworkingStep = (stepData, saveStep = false) => {
-  if (saveStep) {
-    const toolData = removeToolDataKeys({
-      name: state.currentToolProps.name,
-      version: state.currentToolProps.version,
-      color: state.currentToolProps.color,
-      globalCompositeOperation: state.currentToolProps.globalCompositeOperation,
-      frameImageName: state.currentToolProps.frameImageName,
-      customProps: Tools.getCurrentToolCustomProps(),
-    })
-    if (stepData) {
-      Coworking.addStep(removeTouchStepDataKeys(stepData))
-    }
-    Coworking.sendSteps(Layers.getCurrentSelectedLayerId(), toolData)
-    state.stepsSinceLastCoworkingUpdate = 0
-  } else {
-    Coworking.addStep(removeTouchStepDataKeys(stepData))
-    state.stepsSinceLastCoworkingUpdate += 1
-  }
-}
-
 const drawStepStart = (context, stepData, tool) => {
   let doneSomething = false
   context.globalCompositeOperation = tool.globalCompositeOperation
@@ -824,14 +723,11 @@ const handleTouchStartStep = (context) => {
     //   coordsAreInsideLayer(stepData.x + state.currentToolProps.size / 2, stepData.y + state.currentToolProps.size / 2) ||
     //   coordsAreInsideLayer(stepData.x + state.currentToolProps.size / 2, stepData.y - state.currentToolProps.size / 2)
     // )
-    if (thisStepHasDoneSomething && Coworking.isOpen()) {
-      sendCoworkingStep(stepData)
-    }
     updateLastStepData(state, stepData)
   }
 }
 
-const handleTouchMoveStep = (context, sendDataForCoworking) => {
+const handleTouchMoveStep = (context) => {
   if (state.currentTouch.isDown === false) {
     return
   }
@@ -840,10 +736,6 @@ const handleTouchMoveStep = (context, sendDataForCoworking) => {
 
   const thisStepHasDoneSomething = drawStepMove(context, stepData, state.currentToolProps)
   state.currentTouch.drewSomething = state.currentTouch.drewSomething || (thisStepHasDoneSomething && coordsAreInsideLayer(stepData.x, stepData.y))
-  if (sendDataForCoworking && thisStepHasDoneSomething && Coworking.isOpen()) {
-    // se son passati abbastanza steps dall'ultima break nel coworking, aggiungo un breaks
-    sendCoworkingStep(stepData, state.currentTouch.drewSomething && state.stepsSinceLastCoworkingUpdate >= state.currentToolProps.stepsToUpdateCoworking - 1)
-  }
   updateLastStepData(state, stepData)
 
   Debug.logFps()
@@ -865,15 +757,6 @@ const handleTouchEndStep = (context) => {
     stepData = getStepData(state.currentToolProps, state.currentTouch, state.lastStep)
     const thisStepHasDoneSomething = drawStepEnd(context, stepData, state.currentToolProps)
     state.currentTouch.drewSomething = state.currentTouch.drewSomething || (thisStepHasDoneSomething && coordsAreInsideLayer(stepData.x, stepData.y))
-  }
-
-  if (Coworking.isOpen()) {
-    if (state.currentTouch.drewSomething) {
-      sendCoworkingStep(stepData, true)
-    } else {
-      Coworking.clearSteps()
-      state.stepsSinceLastCoworkingUpdate = 0
-    }
   }
 
   if (state.currentTouch.drewSomething) {
@@ -1218,12 +1101,8 @@ const updateZoomCss = (scale = state.canvas.scale, rotation = state.canvas.rotat
   }
 }
 
-export const getCanvasPxSizes = (withCoworking = false) => {
-  if (withCoworking) {
-    let [width, height] = getCanvasContainerPxSizes()
-    width = width + spacing.EDITOR_TOOLS_WIDTH // fix temporaneo perché in coworking non ci sono i layers
-    return [width, height]
-  } else if (Params.deviceHasGoodPerformance) {
+export const getCanvasPxSizes = () => {
+  if (Params.deviceHasGoodPerformance) {
     const [containerWidth, containerHeight] = getCanvasContainerPxSizes()
     const maxSide = round(Math.min(config.maxCanvasSize, Math.max(containerWidth, containerHeight) * config.canvasScaleWithGoodPerformance), 0)
     if (containerWidth > containerHeight) {
@@ -1244,21 +1123,14 @@ const getCanvasContainerPxSizes = (screenWidth = Params.width, screenHeight = Pa
   ]
 }
 
-const initCanvasDimension = (canvasWidth, canvasHeight, withCoworking = false) => {
+const initCanvasDimension = (canvasWidth, canvasHeight) => {
   if (!canvasWidth || !canvasHeight) {
-    [canvasWidth, canvasHeight] = getCanvasPxSizes(withCoworking)
+    [canvasWidth, canvasHeight] = getCanvasPxSizes()
   }
   refs.canvasForLine.width = state.canvas.width = canvasWidth
   refs.canvasForLine.height = state.canvas.height = canvasHeight
 
   initCanvasUtils(canvasWidth, canvasHeight)
-
-  if (withCoworking) {
-    const [normalCanvasWidth, normalCanvasHeight] = getCanvasPxSizes(true)
-    if (canvasWidth !== normalCanvasWidth || canvasHeight !== normalCanvasHeight) {
-      Messages.info(labels.youHaveDifferentScreenSizes)
-    }
-  }
 
   const [containerWidth, containerHeight] = getCanvasContainerPxSizes()
   state.canvas.initialScale = state.canvas.scale = getNumberInBetween(config.maxScale, config.minScale, round(Math.min(containerWidth / canvasWidth, containerHeight / canvasHeight), 4), 4)
@@ -1350,14 +1222,13 @@ const initDom = async () => {
 }
 
 const initSubModules = async (preloadedDrawing = {}, options = {}) => {
-  initEditorUtils(state.canvas.width, state.canvas.height)
+
   await Toolbar.init(refs.container)
   await Layers.init(
     refs.container,
     preloadedDrawing.layers || [],
     state.canvas.width,
-    state.canvas.height,
-    options.coworkerId ? [options.coworkerId] : []
+    state.canvas.height
   )
   await Promise.all([
     Tools.init(
@@ -1380,14 +1251,12 @@ const initSubModules = async (preloadedDrawing = {}, options = {}) => {
 
 export const open = async (preloadedDrawindId, options = {}) => {
   console.log('editor open', preloadedDrawindId, options)
-  coworking = Coworking.requestSession // just to have an alias for app.drawith.me?editor/coworking
   state = initState(initialState)
   await initDom()
   Debug.startFpsLog()
   Header.hide()
   addRotationHandler(onRotate)
   addGlobalStatus('drawith__EDITOR-OPEN')
-  toggleGlobalStatus('drawith__EDITOR-COWORKING', !!options.withCoworking)
 
   let preloadedDrawing = {}
   if (preloadedDrawindId) {
@@ -1397,11 +1266,7 @@ export const open = async (preloadedDrawindId, options = {}) => {
       state.localDbDrawId = preloadedDrawindId
     }
   } else {
-    if (options.withCoworking) {
-      initCanvasDimension(options.coworkingCanvasWidth, options.coworkingCanvasHeight, true)
-    } else {
-      initCanvasDimension()
-    }
+    initCanvasDimension()
   }
 
   setDraftInterval(true)
@@ -1415,10 +1280,8 @@ export const open = async (preloadedDrawindId, options = {}) => {
 
 export const close = async () => {
   removeGlobalStatus('drawith__EDITOR-OPEN')
-  removeGlobalStatus('drawith__EDITOR-COWORKING')
   setDraftInterval(false)
   cleanBucketHistory()
-  cleanEditorUtils()
   refs.pipetteCursor.style.left = '50%'
   refs.pipetteCursor.style.top = '50%'
   Header.show()
@@ -1432,6 +1295,5 @@ export const close = async () => {
   Ruler.remove()
   removeCanvasUtils()
   state = {}
-  coworking = undefined
   cleanRefs(refs)
 }

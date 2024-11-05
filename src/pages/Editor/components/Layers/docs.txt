@@ -1,5 +1,0 @@
----- COROWKING ----
-  - layer.owner:
-      Ad ogni refresh pagina, viene creato un id su Coworking.getUserId()
-      Quando si apre un coworking, bisogna scambiarsi questi id, che verranno usati per salvare assegnare i layers ad uno o all'altro utente.
-      Al salvataggio del disegno, si può cancellare il layer.owner perché tanto tutti i layer diventano tuoi quando lo riapri da zero.

@@ -108,21 +108,11 @@
   cursor: pointer;
   border: solid 0.15rem var(--palette-gray-4);
 }
-.editor-layers__layer.editor-layers__layer-coworker {
-  cursor: not-allowed;
-  border: solid 0.15rem var(--palette-gray-5);
-}
 .editor-layers__layer.editor-layers__layer-yours.editor-layers__layer-selected {
   border: solid 0.2rem var(--palette-green-0);
   width: calc(var(--layers-container-width) - 0.5rem);
   height: calc(var(--layers-container-width) - 0.5rem);
 }
-.editor-layers__layer.editor-layers__layer-coworker.editor-layers__layer-selected {
-  border: solid 0.15rem var(--palette-gray-4);
-  width: calc(var(--layers-container-width) - 1.25rem);
-  height: calc(var(--layers-container-width) - 1.25rem);
-}
-
 .editor-layers__layer-active .editor-layers__layer-preview {
   opacity: 1;
 }
@@ -145,32 +135,12 @@
   background-repeat: no-repeat;
 }
 
-.editor-layers__layer-coworker .editor-layers__layer-coworker-icon {
-  border-bottom-right-radius: 0.5rem;
-  left: 0rem;
-}
-.editor-layers__layer-coworker .editor-layers__layer-selected-icon {
-  border-bottom-left-radius: 0.5rem;
-  right: 0rem;
-}
-.editor-layers__layer-coworker .editor-layers__layer-coworker-icon,
-.editor-layers__layer-coworker .editor-layers__layer-selected-icon {
-  display: inline-block;
-  position: absolute;
-  width: 2rem;
-  height: 2rem;
-  top: 0rem;
-  background-color: var(--palette-gray-6);
-}
-.editor-layers__layer-coworker-icon div,
 .editor-layers__layer-selected-icon div {
   width: 80%;
   height: 80%;
   margin: 10%;
 }
-.editor-layers__layer-yours .editor-layers__layer-coworker-icon,
-.editor-layers__layer-yours .editor-layers__layer-selected-icon,
-.editor-layers__layer-coworker:not(.editor-layers__layer-selected) .editor-layers__layer-selected-icon {
+.editor-layers__layer-yours .editor-layers__layer-selected-icon {
   display: none;
 }
 
@@ -192,10 +162,6 @@
   margin-left: 0.5rem;
   vertical-align: top;
 }
-.editor-layers__layer-coworker .editor-layers__layer-options-button {
-  opacity: 0.3;
-  cursor: not-allowed;
-}
 .editor-layers__layer-options-name {
   display: inline-block;
   height: 100%;
@@ -210,9 +176,6 @@
   text-align: center;
   font-family: sans-serif;
   font-size: 1.1rem;
-}
-.editor-layers__layer-coworker .editor-layers__layer-options-name input {
-  cursor: not-allowed;
 }
 .editor-layers__layer-yours .editor-layers__layer-options-name input {
   cursor: pointer;
@@ -263,7 +226,6 @@
 .editor-layers__params-delete,
 .editor-layers__params-merge-down,
 .editor-layers__params-resize,
-.editor-layers__params-send,
 .editor-layers__params-flip-horizontal,
 .editor-layers__params-flip-vertical {
   width: 3rem;
@@ -282,12 +244,6 @@
 }
 .editor-layers__opacity-slider {
   margin: 2rem;
-}
-.editor-layers__params-send {
-  display: none;
-}
-.drawith__EDITOR-COWORKING .editor-layers__params-send {
-  display: block;
 }
 .drawith__LAYERS_FULL .editor-layers__params-duplicate {
   opacity: 0.5;
