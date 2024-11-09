@@ -1,13 +1,9 @@
 import * as Folder from 'pages/Folder'
 import * as Editor from 'pages/Editor'
-import * as Info from 'pages/Info'
-import * as NotSupported from 'pages/NotSupported'
 
 const ROUTES = {
   'editor': Editor,
   'folder': Folder,
-  'notsupported': NotSupported,
-  'info': Info,
 }
 
 const config = {
@@ -27,10 +23,6 @@ export const openPageEditor = () => {
 
 export const openPageFolder = () => {
   goToPage('/folder')
-}
-
-export const openPageAboutUs = () => {
-  goToPage('/info/aboutUs')
 }
 
 const decryptInitialPathUrl = (path, search) => {

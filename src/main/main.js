@@ -12,7 +12,7 @@ import { delay, securizeAsyncFn } from 'utils/jsUtils'
 import { init as initImageUtils } from 'utils/imageUtils'
 import { init as initHeader, menuButtonAnimations } from 'components/Header'
 import initDomUtils, { loadTemplate, preventDefault, setSpinner, preventMoveDefaultIfNeeded } from 'utils/domUtils'
-import { openPageFolder, openPageAboutUs, openCurrentUrlPage } from 'modules/Router'
+import { openPageFolder, openCurrentUrlPage } from 'modules/Router'
 import { getRealScreenWidth, getRealScreenHeight, cleanEventsForNextRefresh, mergeObject, handleGlobalResize, addGlobalStatus, removeGlobalStatus } from 'utils/moduleUtils'
 
 
@@ -211,12 +211,6 @@ const openFolder = (e) => {
   openPageFolder()
 }
 
-const openAboutUs = (e) => {
-  preventDefault(e)
-  closeMainMenu()
-  openPageAboutUs()
-}
-
 const initDom = async() => {
   refs.mainContainer = await loadTemplate(tplApp, {
     labels,
@@ -224,7 +218,6 @@ const initDom = async() => {
   refs.pagesContainer = refs.mainContainer.querySelector('.drawith__pages-container')
   refs.mainContainer.querySelector('.drawith__menu-pages-placeholder').addEventListener(Params.eventStart, preventDefault)
   refs.mainContainer.querySelector('.drawith__menu-item-folder').addEventListener(Params.eventStart, openFolder)
-  refs.mainContainer.querySelector('.drawith__menu-item-about').addEventListener(Params.eventStart, openAboutUs)
   refs.mainContainer.querySelector('.drawith__menu-pages-clear').addEventListener(Params.eventStart, preventDefault)
 
   if (Params.ipad) {
