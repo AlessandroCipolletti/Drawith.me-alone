@@ -225,52 +225,6 @@ export const copyTextToClipboard = (str) => {
   document.body.removeChild(el)
 }
 
-// const textIndexedDbSupport = async() => {
-//   // test indexDb db creation
-//   indexedDB.deleteDatabase('db')
-//   const db = new Dexie('db')
-//   db.version(1).stores({
-//     ex: '++id, field1, field2, field3',
-//   })
-
-//   // test indexDb ex changes
-//   await db.ex.add({ field1: 'hello', field2: 'world' })
-//   const result1 = (await db.ex.toCollection().toArray())[0]
-//   const result2 = (await db.ex.where('field1').equals('hello').toArray())[0]
-//   if (result1.field2 !== result2.field2) {
-//     return false
-//   }
-//   await db.ex.where('id').equals(1).modify({ field1: 'ciao' })
-//   if ((((await db.ex.toCollection().toArray())[0]).field1) !== 'ciao') {
-//     return false
-//   }
-//   await db.ex.where('id').equals(1).filter(e => e.field1 === 'ciao').delete()
-//   if ((await db.ex.toCollection().toArray())[0]) {
-//     return false
-//   }
-
-//   // delete test db
-//   await db.close
-//   indexedDB.deleteDatabase('db')
-
-//   return true
-// }
-
-export const testDeviceSupported = async() => {
-  return true
-  // let supported = false
-  //
-  // try {
-  //   supported = await textIndexedDbSupport()
-  // } catch (error) {
-  //   supported = false
-  //   indexedDB.deleteDatabase('db')
-  //   handleJsError({}, error, 'testDeviceSupported failed', 'testDeviceSupported', false)
-  // }
-  //
-  // return supported
-}
-
 export const parallelize = async(data, fn, maxParallel = 8) => {
   const results = []
   const promises = []

@@ -1,11 +1,7 @@
-import { osVersion, isAndroid, isWearable, isSmartTV, browserVersion, isIOS, isIE, isConsole, isWinPhone, isOpera, browserName } from 'mobile-device-detect'
-
-import { config as supportedVersions } from 'pages/NotSupported/config'
 import * as Folder from 'pages/Folder'
 import * as Editor from 'pages/Editor'
 import * as Info from 'pages/Info'
 import * as NotSupported from 'pages/NotSupported'
-import { testDeviceSupported } from 'utils/jsUtils'
 
 const ROUTES = {
   'editor': Editor,
@@ -24,9 +20,6 @@ const state = {
 
 export const getCurrentPage = () => state.currentPage
 
-export const openPageNotSupported = () => {
-  goToPage('/notsupported')
-}
 
 export const openPageEditor = () => {
   goToPage('/editor')
@@ -53,20 +46,6 @@ const decryptInitialPathUrl = (path, search) => {
   }
 
   return url
-}
-
-export const isSupportedOs = async() => {
-  return (
-    (!isIOS || (isIOS && browserVersion > supportedVersions.ios.minVersion)) &&
-    (!isAndroid || (isAndroid && browserName.toLowerCase().includes('chrome') && parseInt(osVersion) >= supportedVersions.android.minVersion && parseInt(browserVersion) >= supportedVersions.android.minBrowserVersion)) &&
-    (!isIE) &&
-    (!isSmartTV) &&
-    (!isWearable) &&
-    (!isConsole) &&
-    (!isWinPhone) &&
-    (!isOpera) &&
-    await testDeviceSupported()
-  )
 }
 
 export const goToPage = async(path, force = false) => {

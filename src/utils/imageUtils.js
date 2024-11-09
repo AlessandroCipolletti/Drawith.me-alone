@@ -164,30 +164,6 @@ export const getImgBase64OffThread = async(bitmap) => {
 
 export const getCanvasBase64Async = async(canvas) => blobToBase64Async(await getCanvasBlobAsync(canvas))
 
-
-// export const base64ToImageData = async(base64, x = 0, y = 0, width = 0, height = 0) => {
-//   const img = await getImageFromUrl(base64)
-//   tempCanvas.width = width || img.naturalWidth || img.width
-//   tempCanvas.height = height || img.naturalHeight || img.height
-//   tempContext.drawImage(img, x, y)
-//   return tempContext.getImageData(x, y, tempCanvas.width, tempCanvas.height).data
-// }
-
-// export const mergeBase64ImagesAsync = async(bases64) => {
-//   tempCanvas.width = tempCanvas.height = 0
-//   const imgs = await Promise.all(bases64.map(getImageFromUrl))
-//   for (const img of imgs) {
-//     if ((img.naturalWidth || img.width) > 1) {
-//       if (!tempCanvas.width) {
-//         tempCanvas.width = img.naturalWidth || img.width
-//         tempCanvas.height = img.naturalHeight || img.height
-//       }
-//       tempContext.drawImage(img, 0, 0)
-//     }
-//   }
-//   return await getCanvasBase64Async(tempCanvas)
-// }
-
 export const duplicateCanvas = (sourceCanvas, offscreen = false) => {
   let canvas
   if (offscreen) {
@@ -263,23 +239,6 @@ export const getImageFromUrl = async(url) => {
   await setImageSrcSync(img, url)
   return img
 }
-
-// export const getImageFromUrl = (url, useTemp = false) => {
-//   if (useTemp) {
-//     return loadImageOffThread(tempImage, url).then(() => tempImage)
-//   } else {
-//     const img = new Image()
-//     img.crossOrigin = 'Anonymous'
-//     return loadImageOffThread(img, url).then(() => img)
-//   }
-// }
-
-// export const loadImageOffThread = async(img, url) => {
-//   const blobUrl = await fetchUrlFileOffThread(url)
-//   return setImageSrcSync(img, blobUrl).then(() => {
-//     URL.revokeObjectURL(blobUrl)
-//   })
-// }
 
 export const setImageSrcSync = (img, src) => {
   return new Promise((resolve, reject) => {

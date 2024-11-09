@@ -12,7 +12,7 @@ import { delay, securizeAsyncFn } from 'utils/jsUtils'
 import { init as initImageUtils } from 'utils/imageUtils'
 import { init as initHeader, menuButtonAnimations } from 'components/Header'
 import initDomUtils, { loadTemplate, preventDefault, setSpinner, preventMoveDefaultIfNeeded } from 'utils/domUtils'
-import { openPageNotSupported, isSupportedOs, openPageFolder, openPageAboutUs, openCurrentUrlPage } from 'modules/Router'
+import { openPageFolder, openPageAboutUs, openCurrentUrlPage } from 'modules/Router'
 import { getRealScreenWidth, getRealScreenHeight, cleanEventsForNextRefresh, mergeObject, handleGlobalResize, addGlobalStatus, removeGlobalStatus } from 'utils/moduleUtils'
 
 
@@ -250,21 +250,16 @@ const init = securizeAsyncFn(async(props = {}) => {
   await initHeader()
   handleGlobalResize()
 
-  if (await isSupportedOs()) {
-    setSpinner(true)
-    await Messages.init()
-    window.Messages = Messages
-    const dbInit = await initLocalDb()
-    if (dbInit) {
-      initDomUtils()
-      initImageUtils()
-      addEnviromentGlobalStatus()
-      openCurrentUrlPage()
-    } else {
-      openPageNotSupported()
-    }
+  setSpinner(true)
+  await Messages.init()
+  const dbInit = await initLocalDb()
+  if (dbInit) {
+    initDomUtils()
+    initImageUtils()
+    addEnviromentGlobalStatus()
+    openCurrentUrlPage()
   } else {
-    openPageNotSupported()
+    console.error('ERROR: Local DB not initialized')
   }
 }, labels.genericError, 'main.init', false)
 
