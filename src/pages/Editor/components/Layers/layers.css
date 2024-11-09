@@ -92,6 +92,8 @@
 }
 .editor-layers__layer {
   position: relative;
+  cursor: pointer;
+  border: solid 0.1rem var(--palette-gray-4);
   width: calc(var(--layers-container-width) - 2rem);
   height: calc(var(--layers-container-width) - 2rem);
   border-radius: 1rem;
@@ -104,12 +106,8 @@
 .editor-layers__layer-active.editor-layers__layer {
   opacity: 1;
 }
-.editor-layers__layer.editor-layers__layer-yours {
-  cursor: pointer;
-  border: solid 0.15rem var(--palette-gray-4);
-}
-.editor-layers__layer.editor-layers__layer-yours.editor-layers__layer-selected {
-  border: solid 0.2rem var(--palette-green-0);
+.editor-layers__layer.editor-layers__layer-selected {
+  border: solid 0.15rem var(--palette-green-0);
   width: calc(var(--layers-container-width) - 0.5rem);
   height: calc(var(--layers-container-width) - 0.5rem);
 }
@@ -133,15 +131,6 @@
   background-position: center;
   background-size: contain;
   background-repeat: no-repeat;
-}
-
-.editor-layers__layer-selected-icon div {
-  width: 80%;
-  height: 80%;
-  margin: 10%;
-}
-.editor-layers__layer-yours .editor-layers__layer-selected-icon {
-  display: none;
 }
 
 .drawith__PHONE .editor-layers__layer-options {
@@ -177,7 +166,7 @@
   font-family: sans-serif;
   font-size: 1.1rem;
 }
-.editor-layers__layer-yours .editor-layers__layer-options-name input {
+.editor-layers__layer-options-name input {
   cursor: pointer;
 }
 
