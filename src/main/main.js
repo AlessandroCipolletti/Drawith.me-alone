@@ -10,19 +10,16 @@ import * as Messages from 'modules/Messages'
 import { initLocalDb } from 'utils/localDbUtils'
 import { delay, securizeAsyncFn } from 'utils/jsUtils'
 import { init as initImageUtils } from 'utils/imageUtils'
-import { init as initHeader, menuButtonAnimations } from 'components/Header'
-import initDomUtils, { loadTemplate, preventDefault, setSpinner, preventMoveDefaultIfNeeded } from 'utils/domUtils'
-import { openPageFolder, openCurrentUrlPage } from 'modules/Router'
-import { getRealScreenWidth, getRealScreenHeight, cleanEventsForNextRefresh, mergeObject, handleGlobalResize, addGlobalStatus, removeGlobalStatus } from 'utils/moduleUtils'
+import { init as initHeader } from 'components/Header'
+import initDomUtils, { loadTemplate, setSpinner, preventMoveDefaultIfNeeded } from 'utils/domUtils'
+import { openCurrentUrlPage } from 'modules/Router'
+import { getRealScreenWidth, getRealScreenHeight, cleanEventsForNextRefresh, mergeObject, handleGlobalResize, addGlobalStatus } from 'utils/moduleUtils'
 
 
 const AppState = {
   NAME: 'Drawith.Me',
   VERSION: '2.6.0',
   DEBUG: true,
-}
-const state = {
-  menuIsOpen: false,
 }
 const refs = {
   mainContainer: null,
@@ -69,35 +66,6 @@ const attachRotationHandler = () => {
     })
   } else {
     window.addEventListener('resize', handleRotation, false)
-  }
-}
-
-export const openMainMenu = (e) => {
-  if (e) {
-    preventDefault(e)
-  }
-  state.menuIsOpen = true
-  addGlobalStatus('drawith__MENU-OPEN')
-  refs.pagesContainer.addEventListener(Params.eventStart, closeMainMenu)
-  menuButtonAnimations.open()
-}
-
-export const closeMainMenu = (e) => {
-  if (e) {
-    preventDefault(e)
-  }
-  state.menuIsOpen = false
-  removeGlobalStatus('drawith__MENU-OPEN')
-  refs.pagesContainer.removeEventListener(Params.eventStart, closeMainMenu)
-  menuButtonAnimations.close()
-}
-
-export const toggleMainMenu = (e) => {
-  preventDefault(e)
-  if (state.menuIsOpen) {
-    closeMainMenu()
-  } else {
-    openMainMenu()
   }
 }
 
@@ -205,20 +173,11 @@ const initViewportTryPixelPerfect = async() => {
   console.log('pxScale', Params.pxScale, 'pixelRatio', Params.pixelRatio, 'viewportScale', Params.viewportScale, 'innerWidth', window.innerWidth, 'getRealScreenWidth', getRealScreenWidth(), 'getRealScreenHeight', getRealScreenHeight())
 }
 
-const openFolder = (e) => {
-  preventDefault(e)
-  closeMainMenu()
-  openPageFolder()
-}
-
 const initDom = async() => {
   refs.mainContainer = await loadTemplate(tplApp, {
     labels,
   })
   refs.pagesContainer = refs.mainContainer.querySelector('.drawith__pages-container')
-  refs.mainContainer.querySelector('.drawith__menu-pages-placeholder').addEventListener(Params.eventStart, preventDefault)
-  refs.mainContainer.querySelector('.drawith__menu-item-folder').addEventListener(Params.eventStart, openFolder)
-  refs.mainContainer.querySelector('.drawith__menu-pages-clear').addEventListener(Params.eventStart, preventDefault)
 
   if (Params.ipad) {
     refs.pagesContainer.addEventListener(Params.eventStart, (e) => {
