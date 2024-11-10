@@ -1,9 +1,7 @@
 const tplPage = require('./tpl/folder.tpl')
 const tplContent = require('./tpl/folderContent.tpl')
-const tplSharePopup = require('./tpl/folderSharePopup.tpl')
 import './tpl/folder.css'
 import './tpl/folderContent.css'
-import './tpl/folderSharePopup.css'
 
 import Params from 'main/Params'
 import * as Messages from 'modules/Messages'
@@ -12,7 +10,6 @@ import { removeSpinnerOverlayFrom, addSpinnerOverlayTo, setSpinner, loadTemplate
 import { fadeInElements, fadeOutElements } from 'utils/animationsUtils'
 import { addGlobalStatus, removeGlobalStatus } from 'utils/moduleUtils'
 import { cleanRefs } from 'utils/moduleUtils'
-import { shareImageWithBase64 } from 'utils/imageUtils'
 import { deepCopy } from 'utils/jsUtils'
 import { addListScrollClickAndPressHandlers } from 'utils/uiUtils'
 
@@ -33,7 +30,6 @@ const refs = {
   drawingsContainer: null,
   selectButton: null,
   doneButton: null,
-  exportButton: null,
   deleteButton: null,
   topnav: null,
 }
@@ -41,8 +37,6 @@ const labels = {
   select: 'Select',
   done: 'Done',
   areYouSure: 'Are you sure?',
-  tapAndHoldOneImage: 'Tap and hold the image to share it',
-  tapAndHoldImages: 'Tap and hold an image to share it',
   withWhiteBackground: 'With white background',
   withoutBackground: 'With no background',
   newDrawing: 'New drawing',
@@ -98,8 +92,6 @@ const onTopnavTouchStart = (e) => {
     selectButtonClick()
   } else if (e.target === refs.doneButton) {
     doneButtonClick()
-  } else if (e.target === refs.exportButton) {
-    exportButtonClick()
   } else if (e.target === refs.deleteButton) {
     deleteButtonClick()
   }
@@ -124,37 +116,6 @@ const doneButtonClick = () => {
   refs.doneButton.classList.add('disabled', 'displayNone')
   refs.selectButton.classList.remove('disabled', 'displayNone')
   deselectAll()
-}
-
-const exportButtonClick = async() => {
-  if (refs.exportButton.classList.contains('disabled')) {
-    return
-  }
-  setSpinner(true)
-  let drawings = await Promise.all(
-    getSelectedIds().map(LocalDB.getOneDrawing)
-  )
-
-  drawings = drawings.map(d => d.bitmap)
-  drawings = await Promise.all(
-    drawings.map(async(drawing) => ({
-      w: await shareImageWithBase64(drawing, true), // white bg
-      t: await shareImageWithBase64(drawing, false), // transparent bg
-    }))
-  )
-  const popupContent = await loadTemplate(tplSharePopup, {
-    drawings,
-    subtitleLabel: drawings.length === 1 ? labels.tapAndHoldOneImage : labels.tapAndHoldImages,
-    withoutBackgroundLabel: labels.withoutBackground,
-    withBackgroundLabel: labels.withWhiteBackground,
-  })
-  drawings = undefined
-  popupContent.addEventListener('gesturestart', preventDefault)
-
-  setSpinner(false)
-  Messages.panel(popupContent, {
-    // onClose: doneButtonClick,
-  })
 }
 
 const deleteButtonClick = async() => {
@@ -235,7 +196,6 @@ const initDom = async() => {
   }, Params.pagesContainer)
   refs.selectButton = refs.container.querySelector('.folder__topbar-button-select')
   refs.doneButton = refs.container.querySelector('.folder__topbar-button-done')
-  refs.exportButton = refs.container.querySelector('.folder__topbar-button-export')
   refs.deleteButton = refs.container.querySelector('.folder__topbar-button-delete')
   refs.topnav = refs.container.querySelector('.folder__topbar')
   refs.drawingsContainer = refs.container.querySelector('.folder__drawings-container')
@@ -243,7 +203,7 @@ const initDom = async() => {
   refs.container.querySelector('.folder__drawing-new-drawing').addEventListener(Params.eventStart, createNewDrawing)
   refs.container.querySelector('.folder__new-container').addEventListener(Params.eventStart, preventDefault)
   addListScrollClickAndPressHandlers(refs.drawingsContainer, onDrawingClick, onDrawingLongPress)
-  toolsButtons.push(refs.exportButton, refs.deleteButton)
+  toolsButtons.push(refs.deleteButton)
 }
 
 export const open = async() => {

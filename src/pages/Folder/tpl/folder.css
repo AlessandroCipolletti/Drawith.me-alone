@@ -77,13 +77,11 @@
   margin: -2px 0.5rem 0px;
 }
 
-.folder__topbar-button-delete,
-.folder__topbar-button-export {
+.folder__topbar-button-delete {
   display: none;
   float: left;
 }
-.drawith__FOLDER-SELECT-MODE .folder__topbar-button-delete,
-.drawith__FOLDER-SELECT-MODE .folder__topbar-button-export {
+.drawith__FOLDER-SELECT-MODE .folder__topbar-button-delete {
   display: block;
 }
 

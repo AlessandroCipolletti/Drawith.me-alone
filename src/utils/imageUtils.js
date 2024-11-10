@@ -1,13 +1,7 @@
 import { v4 as uuidv4 } from 'uuid'
-let logo
-const logoSrc = require('static/img/logoExport.png')
-
 import { waitWorkerMessage, postWorkerCommand } from 'utils/jsUtils'
-import { getNumberInBetween, round, valuesAreSimilar } from 'utils/mathUtils'
+import { round, valuesAreSimilar } from 'utils/mathUtils'
 
-const DRAWING_SCALE_RATIO_ON_SHARE = 1
-const MIN_LOGO_SIZE = 60
-const MAX_LOGO_SIZE = 300
 const MAX_THUMBNAIL_SIZE = 400
 
 
@@ -273,38 +267,6 @@ export const addImageWhiteBgAndGetBase64 = (img) => {
   tempContext.fillStyle = '#FFFFFF'
   tempContext.fillRect(0, 0, tempCanvas.width, tempCanvas.height)
   tempContext.drawImage(img, 0, 0, tempCanvas.width, tempCanvas.height)
-  return tempCanvas.toDataURL('image/png')
-}
-
-export const shareImageWithBase64 = async(img, bgWhite = false) => {
-  tempCanvas.width = (img.naturalWidth || img.width) * DRAWING_SCALE_RATIO_ON_SHARE
-  tempCanvas.height = (img.naturalHeight || img.height) * DRAWING_SCALE_RATIO_ON_SHARE
-
-  // bg
-  if (bgWhite) {
-    tempContext.fillStyle = '#FFFFFF'
-    tempContext.fillRect(0, 0, tempCanvas.width, tempCanvas.height)
-  }
-
-  // drawing
-  tempContext.drawImage(img, 0, 0, tempCanvas.width, tempCanvas.height)
-
-  // drawith.me logo
-  logo = logo || await getImageFromUrl(logoSrc)
-  const maxSide = Math.max(tempCanvas.width, tempCanvas.height)
-  const minSide = Math.min(tempCanvas.width, tempCanvas.height)
-  const margin = Math.min(minSide * 0.03, 10)
-  const logoRatio = (logo.naturalWidth / logo.naturalHeight)
-  const logoWidth = getNumberInBetween(maxSide * 0.1, MIN_LOGO_SIZE, MAX_LOGO_SIZE)
-  const logoHeight = logoWidth / logoRatio
-  tempContext.drawImage(
-    logo,
-    tempCanvas.width - logoWidth - margin,
-    tempCanvas.height - logoHeight - margin,
-    logoWidth,
-    logoHeight
-  )
-
   return tempCanvas.toDataURL('image/png')
 }
 

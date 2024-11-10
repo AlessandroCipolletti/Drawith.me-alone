@@ -13,9 +13,6 @@
     <div
       class="folder__topbar-button folder__topbar-button-ICON folder__topbar-button-delete svg-icon-delete svg-icon-dark disabled">
     </div>
-    <div
-      class="folder__topbar-button folder__topbar-button-ICON folder__topbar-button-export svg-icon-export svg-icon-dark disabled">
-    </div>
   </div>
 
   <div class="folder__drawings-container"></div>
