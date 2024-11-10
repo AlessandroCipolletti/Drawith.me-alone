@@ -3,10 +3,8 @@
 build/
 node_modules/
 backup/
-**/.DS_Store
 package-lock.json
 .parcel-cache/
 .DS_Store
-src/modules/.DS_Store
-.DS_Store
-.DS_Store
+**/.DS_Store
+**/**/.DS_Store

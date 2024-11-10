@@ -12,17 +12,6 @@
       <div class="editor-toolbar__button svg-icon-opacity svg-icon-dark"></div>
       <span></span>
     </div>
-
-    <!--
-    <div class="editor-toolbar__options-group">
-      <div class="editor-toolbar__button">
-        <div class=" editor-toolbar__button-undo svg-icon-undo svg-icon-dark"></div>
-      </div>
-      <div class="editor-toolbar__button">
-        <div class=" editor-toolbar__button-redo svg-icon-redo svg-icon-dark"></div>
-      </div>
-    </div>
-    -->
   </div>
 
   <div class="editor-toolbar__right">
