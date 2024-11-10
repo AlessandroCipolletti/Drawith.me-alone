@@ -224,7 +224,7 @@ export const clear = () => {
 
 const useBucket = async(context, x, y, color) => {
   if (coordsAreInsideLayer(x, y)) {
-    if (Layers.isYourLayerEmpty()) {
+    if (Layers.isLayerEmpty()) {
       // this layer is empty, we can fill it all
       // TODO or entirely colored with just one color
       fillCompletely(context, color, context.canvas.width, context.canvas.height)

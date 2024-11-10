@@ -953,8 +953,8 @@ const mergeDownSelectedLayer = async(e) => {
   openParams()
 
   const selectedLayer = state.layers[state.currentSelectedLayerId]
-  const isLayerEmpty = !Number.isFinite(selectedLayer.minX)
-  const canMergeDown = !isLayerEmpty && selectedLayer.order > 0
+  const isSelectedLayerEmpty = isLayerEmpty()
+  const canMergeDown = !isSelectedLayerEmpty && selectedLayer.order > 0
 
   if (
     refs.mergeDownLayerButton.classList.contains('disabled') ||
@@ -1225,12 +1225,12 @@ const updateLayerOpacity = (() => {
 const updateParamsByLayer = (layerId = state.currentSelectedLayerId) => {
   if (layerId) {
     const layer = state.layers[layerId]
-    const isLayerEmpty = !Number.isFinite(layer.minX)
+    const isSelectedLayerEmpty = isLayerEmpty(layerId)
     const canBeResized = layerCanBeResized(layerId)
     const canBeDeleted = Object.values(state.layers).length > 1
     const opacity = round(layer.opacity * 100, 0)
-    const canMergeDown = !isLayerEmpty && Object.values(state.layers).length > 1 && layer.order > 0
-    const canDuplicate = !isLayerEmpty && Object.values(state.layers).length < config.maxLayersNumber
+    const canMergeDown = !isSelectedLayerEmpty && Object.values(state.layers).length > 1 && layer.order > 0
+    const canDuplicate = !isSelectedLayerEmpty && Object.values(state.layers).length < config.maxLayersNumber
 
     refs.opacityLabel.innerHTML = `${round(opacity, 0)}`
     refs.opacityCursor.style.bottom = `${opacity}%`
@@ -1238,8 +1238,8 @@ const updateParamsByLayer = (layerId = state.currentSelectedLayerId) => {
     refs.duplicateLayerButton.classList.toggle('disabled', !canDuplicate)
     refs.deleteLayerButton.classList.toggle('disabled', !canBeDeleted)
     refs.mergeDownLayerButton.classList.toggle('disabled', !canMergeDown)
-    refs.flipVerticalButton.classList.toggle('disabled', isLayerEmpty)
-    refs.flipHorizontalButton.classList.toggle('disabled', isLayerEmpty)
+    refs.flipVerticalButton.classList.toggle('disabled', isSelectedLayerEmpty)
+    refs.flipHorizontalButton.classList.toggle('disabled', isSelectedLayerEmpty)
     updateResizeMode(state.resizeMode && canBeResized, canBeResized)
     updateGcoMode(state.gcoMode && canBeResized, !state.resizeMode && canBeResized)
     refs.visibilityLayerButton.classList.toggle('svg-icon-visible', layer.active)
