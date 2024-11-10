@@ -1,13 +1,3 @@
-@font-face {
-  font-family: "Poppins";
-  src: url("../static/font/Poppins-Light.ttf");
-}
-
-@font-face {
-  font-family: "Poppins-Medium";
-  src: url("../static/font/Poppins-Regular.ttf");
-}
-
 :root {
   --safe-area-top: env(safe-area-inset-top);
   --safe-area-right: env(safe-area-inset-right);
@@ -21,7 +11,7 @@
 
   margin: 0rem;
   padding: 0rem;
-  font-family: 'Poppins', sans-serif;
+  font-family: system-ui, sans-serif;
   letter-spacing: 0.05rem;
   font-size: 1.5rem;
   opacity: 1;
@@ -277,21 +267,9 @@ iframe {
   mask-image: url("../static/icons/svg/rename.svg");
   -webkit-mask-image: url("../static/icons/svg/rename.svg");
 }
-.svg-icon-edit {
-  mask-image: url("../static/icons/svg/edit.svg");
-  -webkit-mask-image: url("../static/icons/svg/edit.svg");
-}
 .svg-icon-delete {
   mask-image: url("../static/icons/svg/delete.svg");
   -webkit-mask-image: url("../static/icons/svg/delete.svg");
-}
-.svg-icon-export {
-  mask-image: url("../static/icons/svg/export.svg");
-  -webkit-mask-image: url("../static/icons/svg/export.svg");
-}
-.svg-icon-info-line {
-  mask-image: url("../static/icons/svg/info-line.svg");
-  -webkit-mask-image: url("../static/icons/svg/info-line.svg");
 }
 .svg-icon-back {
   mask-image: url("../static/icons/svg/back.svg");
@@ -309,10 +287,6 @@ iframe {
   mask-image: url("../static/icons/svg/back-save.svg");
   -webkit-mask-image: url("../static/icons/svg/back-save.svg");
 }
-.svg-icon-download {
-  mask-image: url("../static/icons/svg/download.svg");
-  -webkit-mask-image: url("../static/icons/svg/download.svg");
-}
 .svg-icon-success {
   mask-image: url("../static/icons/svg/success.svg");
   -webkit-mask-image: url("../static/icons/svg/success.svg");
@@ -329,10 +303,6 @@ iframe {
   mask-image: url("../static/icons/svg/confirm.svg");
   -webkit-mask-image: url("../static/icons/svg/confirm.svg");
 }
-.svg-icon-input {
-  mask-image: url("../static/icons/svg/confirm.svg");
-  -webkit-mask-image: url("../static/icons/svg/confirm.svg");
-}
 .svg-icon-warning {
   mask-image: url("../static/icons/svg/warning.svg");
   -webkit-mask-image: url("../static/icons/svg/warning.svg");
@@ -340,22 +310,6 @@ iframe {
 .svg-icon-plus {
   mask-image: url("../static/icons/svg/plus.svg");
   -webkit-mask-image: url("../static/icons/svg/plus.svg");
-}
-.svg-icon-close {
-  mask-image: url("../static/icons/svg/close.svg");
-  -webkit-mask-image: url("../static/icons/svg/close.svg");
-}
-.svg-icon-expand {
-  mask-image: url("../static/icons/svg/expand.svg");
-  -webkit-mask-image: url("../static/icons/svg/expand.svg");
-}
-.svg-icon-reduce {
-  mask-image: url("../static/icons/svg/reduce.svg");
-  -webkit-mask-image: url("../static/icons/svg/reduce.svg");
-}
-.svg-icon-options {
-  mask-image: url("../static/icons/svg/options.svg");
-  -webkit-mask-image: url("../static/icons/svg/options.svg");
 }
 .svg-icon-visible {
   mask-image: url("../static/icons/svg/visible.svg");
@@ -393,42 +347,6 @@ iframe {
   mask-image: url("../static/icons/svg/flip-v.svg");
   -webkit-mask-image: url("../static/icons/svg/flip-v.svg");
 }
-.svg-icon-drawing {
-  mask-image: url("../static/icons/svg/drawing.svg");
-  -webkit-mask-image: url("../static/icons/svg/drawing.svg");
-}
-.svg-icon-refresh {
-  mask-image: url("../static/icons/svg/refresh.svg");
-  -webkit-mask-image: url("../static/icons/svg/refresh.svg");
-}
-.svg-icon-smile {
-  mask-image: url("../static/icons/svg/smile.svg");
-  -webkit-mask-image: url("../static/icons/svg/smile.svg");
-}
-.svg-icon-mail {
-  mask-image: url("../static/icons/svg/mail.svg");
-  -webkit-mask-image: url("../static/icons/svg/mail.svg");
-}
-.svg-icon-tos {
-  mask-image: url("../static/icons/svg/tos.svg");
-  -webkit-mask-image: url("../static/icons/svg/tos.svg");
-}
-.svg-icon-error-line {
-  mask-image: url("../static/icons/svg/error_line.svg");
-  -webkit-mask-image: url("../static/icons/svg/error_line.svg");
-}
-.svg-icon-success-line {
-  mask-image: url("../static/icons/svg/success_line.svg");
-  -webkit-mask-image: url("../static/icons/svg/success_line.svg");
-}
-/* .svg-icon-eraser-line {
-  mask-image: url("../static/icons/svg/eraser_line.svg");
-  -webkit-mask-image: url("../static/icons/svg/eraser_line.svg");
-} */
-/* .svg-icon-pencil {
-  mask-image: url("../static/icons/svg/pencil.svg");
-  -webkit-mask-image: url("../static/icons/svg/pencil.svg");
-} */
 .svg-icon-dynamic-editor-fullscreen {
   mask-image: url("../static/icons/svg/expand.svg");
   -webkit-mask-image: url("../static/icons/svg/expand.svg");

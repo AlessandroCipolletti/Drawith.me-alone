@@ -77,17 +77,6 @@
   border-left: solid 0.2rem transparent;
 }
 
-/*
-.editor-tools__tool-pen {
-  background-image: url("../../../../static/icons/png/pen.png");
-}
-.editor-tools__tool-crayon {
-  background-image: url("../../../../static/icons/png/crayon.png");
-}
-.editor-tools__tool-softEraser {
-  background-image: url("../../../../static/icons/png/softEraser.png");
-}
-*/
 .editor-tools__tool-marker {
   background-image: url("../../../../static/icons/png/marker.png");
 }
@@ -127,9 +116,7 @@
 .editor-tools__tool-clear {
   background-image: url("../../../../static/icons/png/clear.png");
 }
-/* .editor-tools__tool-exit {
-  background-image: url("../../../../static/icons/png/exit.png");
-} */
+
 
 .editor-tools__tool-paper.paper-white {
   background-image: url("../../../../static/icons/png/paper_white.png");
