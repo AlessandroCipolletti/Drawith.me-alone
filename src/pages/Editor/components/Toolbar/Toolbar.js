@@ -7,7 +7,7 @@ import * as Tools from 'pages/Editor/components/Tools'
 import * as Layers from 'pages/Editor/components/Layers'
 import { cleanRefs } from 'utils/moduleUtils'
 import { deepCopy } from 'utils/jsUtils'
-import { preventDefault, loadTemplate, disableElements, enableElements, getEventCoordX, createDom } from 'utils/domUtils'
+import { preventDefault, loadTemplate, getEventCoordX, createDom } from 'utils/domUtils'
 import { addHorizontalDragSliderHandler } from 'utils/uiUtils'
 import { round, logarithmicPercToValue, logarithmicValueToPerc, getNumberInBetween } from 'utils/mathUtils'
 import { cursorButtonTouchStart, getToolPreviewTouchEvents } from './toolbarUtils'
@@ -41,7 +41,6 @@ const refs = {
   centerSide: null,
   rightSide: null,
   backButton: null,
-  saveCopyButton: null,
   goFullscreenButton: null,
   slider: null,
   sliderLabel: null,
@@ -213,14 +212,6 @@ export const setTool = (toolProps) => {
   closeParams()
 }
 
-export const disableSaveCopy = () => {
-  disableElements(refs.saveCopyButton)
-}
-
-export const enableSaveCopy = () => {
-  enableElements(refs.saveCopyButton)
-}
-
 export const addOptionButtonsGroup = (buttons = [], side = 'center') => {
   const spacer = createDom('editor-toolbar__spacer')
   const wrapper = createDom('editor-toolbar__options-group')
@@ -251,7 +242,6 @@ const initDom = async(container) => {
   refs.toolPreviewPopup = refs.toolPreview.querySelector('.editor-toolbar__tool-preview-popup')
   refs.toolPreviewCanvas = refs.toolPreview.querySelector('canvas')
   refs.backButton = refs.container.querySelector('.editor__back')
-  refs.saveCopyButton = refs.container.querySelector('.editor__save-copy')
   refs.goFullscreenButton = refs.container.querySelector('.editor__go-fullscreen')
   refs.sizeButton = refs.container.querySelector('.editor-toolbar__size')
   refs.alphaButton = refs.container.querySelector('.editor-toolbar__alpha')
@@ -270,12 +260,6 @@ const initDom = async(container) => {
   refs.toolPreviewContext = getNewContextForCanvas(refs.toolPreviewCanvas)
 
   addHorizontalDragSliderHandler(refs.sliderCursor, refs.slider, onSliderDrag, 100, 1, false, 0, config.slidersWaitingTime)
-  if (Params.isPhone) {
-    refs.saveCopyButton.remove()
-  } else {
-    refs.saveCopyButton.addEventListener(Params.eventStart, Editor.saveCopy)
-    disableSaveCopy()
-  }
   refs.sizeButton.addEventListener(Params.eventStart, onSizeTouchStart)
   refs.alphaButton.addEventListener(Params.eventStart, onAlphaTouchStart)
   refs.backButton.addEventListener(Params.eventStart, Editor.saveAndGoToFolder)

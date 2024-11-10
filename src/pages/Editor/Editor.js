@@ -197,8 +197,6 @@ const refs = {
 const labels = {
   draftSaved: 'Draft saved',
   draftError: 'An error occurred during draft saving',
-  copySaved: 'New copy saved',
-  copyError: 'An error occurred during saving',
   savingError: 'An error occurred during saving',
 }
 
@@ -216,7 +214,6 @@ export const setDrawingModified = () => {
   }
   if (!state.modifiedSinceLastCopy) {
     state.modifiedSinceLastCopy = true
-    Toolbar.enableSaveCopy()
   }
 }
 
@@ -402,21 +399,6 @@ const onSaveDraft = (draftId) => {
 const onSaveDraftError = () => {
   state.localDbDrawId = false
   Messages.error(labels.draftError)
-}
-
-export const saveCopy = () => save({
-  onSave: onSaveCopy,
-  onError: onSaveCopyError,
-  asCopy: true,
-})
-const onSaveCopy = () => {
-  state.modifiedSinceLastCopy = false
-  Messages.info(labels.copySaved, config.draftInfoDuration)
-  Toolbar.disableSaveCopy()
-}
-const onSaveCopyError = () => {
-  Messages.error(labels.draftError)
-  Toolbar.enableSaveCopy()
 }
 
 export const saveDrawingsPalette = (colors = []) => {

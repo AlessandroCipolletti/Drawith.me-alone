@@ -277,10 +277,6 @@ iframe {
   mask-image: url("../static/icons/svg/rename.svg");
   -webkit-mask-image: url("../static/icons/svg/rename.svg");
 }
-.svg-icon-copy {
-  mask-image: url("../static/icons/svg/copy.svg");
-  -webkit-mask-image: url("../static/icons/svg/copy.svg");
-}
 .svg-icon-edit {
   mask-image: url("../static/icons/svg/edit.svg");
   -webkit-mask-image: url("../static/icons/svg/edit.svg");
@@ -653,6 +649,7 @@ input[type="password"].error {
     0% 0%,
     100% 0%;
 }
+
 @keyframes border-dance {
   100% {
     background-position:

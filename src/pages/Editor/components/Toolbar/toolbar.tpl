@@ -26,7 +26,6 @@
   </div>
 
   <div class="editor-toolbar__right">
-    <div class="editor-toolbar__button editor__save-copy svg-icon-download svg-icon-dark"></div>
     <div class="editor-toolbar__button editor__go-fullscreen svg-icon-dynamic-editor-fullscreen svg-icon-dark"></div>
   </div>
 </div>

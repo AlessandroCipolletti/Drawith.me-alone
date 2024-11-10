@@ -216,15 +216,6 @@ export const postWorkerCommand = async(worker, data) => {
   return result
 }
 
-export const copyTextToClipboard = (str) => {
-  const el = document.createElement('textarea')
-  el.value = str
-  document.body.appendChild(el)
-  el.select()
-  document.execCommand('copy')
-  document.body.removeChild(el)
-}
-
 export const parallelize = async(data, fn, maxParallel = 8) => {
   const results = []
   const promises = []
