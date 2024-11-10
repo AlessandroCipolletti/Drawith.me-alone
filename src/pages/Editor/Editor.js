@@ -4,7 +4,6 @@ import './editor.css'
 import Params from 'main/Params'
 import * as Debug from 'modules/Debug'
 import * as Messages from 'modules/Messages'
-import * as Header from 'components/Header'
 import * as ColorPicker from './components/ColorPicker'
 import * as Toolbar from './components/Toolbar'
 import * as Layers from './components/Layers'
@@ -1254,7 +1253,6 @@ export const open = async (preloadedDrawindId, options = {}) => {
   state = initState(initialState)
   await initDom()
   Debug.startFpsLog()
-  Header.hide()
   addRotationHandler(onRotate)
   addGlobalStatus('drawith__EDITOR-OPEN')
 
@@ -1284,7 +1282,6 @@ export const close = async () => {
   cleanBucketHistory()
   refs.pipetteCursor.style.left = '50%'
   refs.pipetteCursor.style.top = '50%'
-  Header.show()
   Debug.stopFpsLog()
   removeRotationHandler(onRotate)
   await fadeOutElements([refs.container])

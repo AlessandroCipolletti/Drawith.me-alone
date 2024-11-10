@@ -37,10 +37,7 @@ const labels = {
   select: 'Select',
   done: 'Done',
   areYouSure: 'Are you sure?',
-  withWhiteBackground: 'With white background',
-  withoutBackground: 'With no background',
-  newDrawing: 'New drawing',
-  navbarTitle: 'YOUR DRAWINGS',
+  navbarTitle: 'Draw something',
 }
 
 let toolsButtons = []
@@ -178,7 +175,7 @@ export const refreshContent = async() => {
   refs.drawingsContainer.innerHTML = ''
   await loadTemplate(tplContent, { drawings }, refs.drawingsContainer)
   refs.drawingsContainer.scrollTop = currentScroll
-  refs.topnav.classList.toggle('displayNone', !drawings.length)
+  refs.selectButton.classList.toggle('displayNone', !drawings.length)
 
   state.loadingDrawingsIds = drawings.filter(LocalDB.drawingIsSaving).map(d => d.localDbId)
   if (state.loadingDrawingsIds.length > 0) {
@@ -186,6 +183,7 @@ export const refreshContent = async() => {
     clearInterval(state.checkDrawingsInterval)
     state.checkDrawingsInterval = setInterval(updateDrawingsLoading, config.updateDrawingsLoadingDelay)
   }
+  refs.container.querySelector('.folder__drawing-new-drawing').addEventListener(Params.eventStart, createNewDrawing)
 
   drawings = undefined
 }
@@ -200,8 +198,6 @@ const initDom = async() => {
   refs.topnav = refs.container.querySelector('.folder__topbar')
   refs.drawingsContainer = refs.container.querySelector('.folder__drawings-container')
   refs.topnav.addEventListener(Params.eventStart, onTopnavTouchStart, true)
-  refs.container.querySelector('.folder__drawing-new-drawing').addEventListener(Params.eventStart, createNewDrawing)
-  refs.container.querySelector('.folder__new-container').addEventListener(Params.eventStart, preventDefault)
   addListScrollClickAndPressHandlers(refs.drawingsContainer, onDrawingClick, onDrawingLongPress)
   toolsButtons.push(refs.deleteButton)
 }

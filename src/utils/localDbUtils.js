@@ -25,7 +25,7 @@ export const initLocalDb = securizeAsyncFn(async() => {
   LocalDatabase = new Dexie(Params.localDbName)
 
   LocalDatabase.version(1).stores({
-    Drawings: '++localDbId, folderId, title, state, wasSavedAsDraft, gpsCoordinates, createTimestamp, updateTimestamp, createdAt, updatedAt, base64, bitmap, minX, minY, maxX, maxY, width, height, canvasWidth, canvasHeight, mainColor, dashboardCoordinates, selectedTool, selectedColorId, colors, layers, appVersions, toolsCustomProps',
+    Drawings: '++localDbId, folderId, title, state, wasSavedAsDraft, createTimestamp, updateTimestamp, createdAt, updatedAt, base64, bitmap, minX, minY, maxX, maxY, width, height, canvasWidth, canvasHeight, selectedTool, selectedColorId, colors, layers, appVersions, toolsCustomProps',
   })
 
   await deleteUnsavedDrawings()

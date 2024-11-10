@@ -66,7 +66,7 @@
   background-color: rgba(255, 255, 255, 0.5);
   font-family: monospace;
   z-index: 500;
-  top: var(--header-height);
+  top: 0px;
   right: 0px;
   min-width: 3rem;
   max-width: 50%;
@@ -102,13 +102,13 @@
 }
 
 .drawith__MESSAGE-OPEN .messages__container {
-  transform: translate3d(0rem, calc(var(--header-height)), 0px);
+  transform: translate3d(0rem, 0px, 0px);
 }
 .drawith__MESSAGE-OPEN .messages__container.messages__container-alert,
 .drawith__MESSAGE-OPEN .messages__container.messages__container-confirm,
 .drawith__MESSAGE-OPEN .messages__container.messages__container-input {
   transform: translate3d(-50%, -110%, 0px);
-  transform: translate3d(-50%, calc(var(--header-height) + 10rem), 0px);
+  transform: translate3d(-50%, 10rem, 0px);
 }
 
 .messages__margin {

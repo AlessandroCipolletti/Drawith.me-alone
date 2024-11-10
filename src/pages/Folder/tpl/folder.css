@@ -1,10 +1,9 @@
 .folder__container {
   position: absolute;
   background-color: var(--palette-white);
-  top: var(--header-height);
   left: 0rem;
   width: 100%;
-  height: calc(100% - var(--header-height));
+  height: 100%;
   z-index: 50;
   display: flex;
   flex-direction: column;
@@ -16,7 +15,7 @@
   left: 0rem;
   height: 5rem;
   z-index: 60;
-  padding: 0rem 4rem;
+  padding: 0rem 2rem;
   flex-grow: 0;
 }
 .drawith__PHONE .folder__topbar {
@@ -43,8 +42,8 @@
 
 .folder__topbar-button {
   float: right;
-  height: 100%;
-  margin: 0 0.5rem;
+  height: 4rem;
+  margin: 1rem 0.5rem;
   z-index: 70;
   cursor: pointer;
 }
@@ -60,13 +59,13 @@
 }
 
 .folder__topbar-button-TEXT {
-  width: 14rem;
-  margin: -2px 1.5rem 0px;
+  width: 9rem;
+  margin: 1rem 1.5rem 0px;
   border: solid 1px var(--palette-gray-3);
   border-radius: 0.75rem;
   font-size: 1.8rem;
   text-align: center;
-  line-height: 5rem;
+  line-height: 4rem;
   color: var(--palette-blue-0);
 }
 .drawith__PHONE .folder__topbar-button-TEXT {
@@ -74,7 +73,7 @@
   border: none;
   text-align: right;
   font-size: 1.6rem;
-  margin: -2px 0.5rem 0px;
+  margin: 0.5rem 0.5rem 0px;
 }
 
 .folder__topbar-button-delete {
@@ -85,16 +84,6 @@
   display: block;
 }
 
-.folder__new-container {
-  width: 100%;
-  display: flex;
-  justify-content: space-evenly;
-  flex-grow: 0;
-}
-.drawith__PHONE .folder__new-container {
-  height: 20rem;
-  align-items: center;
-}
 
 .folder__drawings-container {
   width: 100%;
@@ -116,20 +105,20 @@
   cursor: auto;
 }
 
-.folder__new-container .folder__drawing-new-drawing {
+.folder__drawing-new-drawing {
   text-align: center;
   margin: 4rem 0rem;
   position: relative;
   overflow: hidden;
-  background: url("../../../static/img/new.png") no-repeat center, url("../../../static/img/paper/white.png");
+  background: url("../../../static/img/paper/white.png");
   background-size: auto 50%, 43px;
+  display: grid;
+  place-items: center;
 }
 
 .folder__drawing-new-drawing span {
-  font-size: 2rem;
-  line-height: 5rem;
-}
-
-.drawith__PORTRAIT .folder__drawing-new-drawing span {
-  font-size: 1.5rem;
+  font-size: 8rem;
+  margin-bottom: 1rem;;
+  font-weight: 100;
+  font-family: system-ui;
 }

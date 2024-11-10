@@ -10,7 +10,6 @@ import * as Messages from 'modules/Messages'
 import { initLocalDb } from 'utils/localDbUtils'
 import { delay, securizeAsyncFn } from 'utils/jsUtils'
 import { init as initImageUtils } from 'utils/imageUtils'
-import { init as initHeader } from 'components/Header'
 import initDomUtils, { loadTemplate, setSpinner, preventMoveDefaultIfNeeded } from 'utils/domUtils'
 import { openCurrentUrlPage } from 'modules/Router'
 import { getRealScreenWidth, getRealScreenHeight, cleanEventsForNextRefresh, mergeObject, handleGlobalResize, addGlobalStatus } from 'utils/moduleUtils'
@@ -199,7 +198,6 @@ const init = securizeAsyncFn(async(props = {}) => {
   await initViewportTryPixelPerfect()
   initTheme()
   await initDom()
-  await initHeader()
   handleGlobalResize()
 
   setSpinner(true)

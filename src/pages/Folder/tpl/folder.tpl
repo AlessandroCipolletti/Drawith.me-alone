@@ -1,10 +1,4 @@
 <div class="folder__container displayNone">
-  <div class="folder__new-container">
-    <div class="folder__drawing folder__drawing-new-drawing">
-      <span>{{labels.newDrawing}}</span>
-    </div>
-  </div>
-
   <div class="folder__topbar">
     <span class="folder__topbar-title">{{labels.navbarTitle}}</span>
     <div class="folder__topbar-button folder__topbar-button-TEXT folder__topbar-button-select">{{labels.select}}</div>
